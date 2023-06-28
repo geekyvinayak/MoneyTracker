@@ -2,6 +2,12 @@ const UserModel = require("../models/UserModel.js");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 
+
+module.exports.welcome = async (req, res) => {
+  res.send("Welcome to Money tracker")
+};
+
+
 module.exports.login = async (req, res) => {
   const { email, password } = req.body;
   const user = await UserModel.findOne({ email: email });
