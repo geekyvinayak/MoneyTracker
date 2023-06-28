@@ -5,7 +5,7 @@ const {login, signup, verify,welcome} = require("../contollers/RoomController");
 const router = express.Router();
 
 // router.get("/getdata",getRoom);
-router.post("/",welcome);
+router.get("/",welcome);
 
 router.post("/login",login);
 
