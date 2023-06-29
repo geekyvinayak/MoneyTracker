@@ -2,11 +2,9 @@ const UserModel = require("../models/UserModel.js");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 
-
 module.exports.welcome = async (req, res) => {
-  res.send("Welcome to Money tracker")
+  res.send("Welcome to Money tracker");
 };
-
 
 module.exports.login = async (req, res) => {
   const { email, password } = req.body;
@@ -17,14 +15,20 @@ module.exports.login = async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
 
     if (match) {
+      const userdata = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        monthCycle: user.monthCycle,
+        monthlyBudget : user.monthlyBudget
+      };
       const token = jwt.sign(
         {
-          data: email,
+          email: email,
         },
-        "secret",
-        { expiresIn: '12h' }
+        "MoneyTrackerjwtencryption@1200",
+        { expiresIn: "12h" }
       );
-      res.send({ stat: "sucess", token: token });
+      res.send({ stat: "sucess", token: token, userdata: userdata });
     } else {
       res.send({ stat: "fail" });
     }
@@ -56,9 +60,32 @@ module.exports.signup = async (req, res) => {
 module.exports.verify = async (req, res) => {
   const token = req.headers["token"];
   try {
-    const decode = await jwt.verify(token, "secret");
+    const decode = await jwt.verify(token, "MoneyTrackerjwtencryption@1200");
     if (decode) {
+      const user = await UserModel.findOne({ email: decode.email });
       res.send({ stat: true, decode });
+    } else {
+      res.send({ stat: false });
+    }
+  } catch (err) {
+    res.send({ stat: false, err: err.message });
+  }
+};
+
+module.exports.update = async (req, res) => {
+  const token = req.headers["token"];
+  let field = req.headers["field"];
+  const updates = req.headers["updates"];
+
+  try {
+    const decode = await jwt.verify(token, "MoneyTrackerjwtencryption@1200");
+    console.log(decode, "-field-", field, "-updates-", updates);
+    if (decode) {
+      const data = await UserModel.findOneAndUpdate(
+        { email: decode.email },
+        { $set: { [field] : updates } }
+      );
+      res.send({stat: true, decode});
     } else {
       res.send({ stat: false });
     }

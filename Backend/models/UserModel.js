@@ -1,6 +1,14 @@
 const mongoose = require("mongoose")
 
 const userSchema = new mongoose.Schema({
+    firstName:{
+        type:String,
+        require:true
+    },
+    lastName:{
+        type:String,
+        require:true
+    },
     email:{
         type:String,
         require:true
@@ -10,7 +18,13 @@ const userSchema = new mongoose.Schema({
         require:true
     },
     monthCycle:{
-        type:Number,
+        type:Number
+    },
+    transactions:{
+        type:Array,
+    },
+    monthlyBudget:{
+        type:Number
     }
 })
 
