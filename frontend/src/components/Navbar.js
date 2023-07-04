@@ -49,7 +49,7 @@ const Navbar = () => {
             {logedin ? 
             <li className="responsive-menu">
               <div class="hamburger-menu">
-                <div className="appname">Chitthi</div>
+                <div className="appname">Money Tracker</div>
                 <input id="menu__toggle" type="checkbox"  />
                 <label class="menu__btn" for="menu__toggle">
                   <span></span>
@@ -61,8 +61,8 @@ const Navbar = () => {
                         </Link>
                       </li>
                       <li>
-                        <Link to="/roomsadd">
-                          <button className="menu__item" onClick={()=>{(document.getElementById("menu__toggle").checked = false)}}>Create/Join Room </button>
+                        <Link to="/usersettings">
+                          <button className="menu__item" onClick={()=>{(document.getElementById("menu__toggle").checked = false)}}>User Setting </button>
                         </Link>
                       </li>
                       <li>
@@ -79,7 +79,7 @@ const Navbar = () => {
                 </ul>
               </div>
             </li>
-            : <div className="appname">Chitthi</div>}
+            : <div className="appname">Money Tracker</div>}
           </ul>
         </div>
       </nav>

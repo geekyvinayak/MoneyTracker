@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { MyContext } from './context/Context';
 import { useNavigate } from 'react-router-dom';
 import Editableinputs from './Editableinputs';
+import "../assets/usersetting.css";
 
 function UserSettings() {
     const { setlogedin, getemail, lastName, firstName,verify,monthCycle ,monthlyBudget} = useContext(MyContext);
@@ -21,25 +22,27 @@ function UserSettings() {
 
 
   return (
+    <div className='form-container user-Settings'>
     <form>
-    <div><label>First Name</label>
+    <div className='user-SettingsItem'><label>First Name</label>
     <Editableinputs text={firstName} field={"firstName"}/>
-    </div> 
-    <div><label>Last Name</label>
+    </div>
+    <div className='user-SettingsItem'><label>Last Name</label>
     <Editableinputs text={lastName} field={"lastName"}/>
     </div>
-    <div><label>Month Cycle</label>
+    <div className='user-SettingsItem'><label>Month Cycle</label>
     <Editableinputs text={monthCycle} field={"monthCycle"}/>
     </div>
 
-    <div><label>Month Budget</label>
+    <div className='user-SettingsItem'><label>Month Budget</label>
     <Editableinputs text={monthlyBudget} field={"monthlyBudget"}/>
     </div>
     
-    <div><label>Email</label>
+    <div className='user-SettingsItem'><label>Email</label>
     <label>{getemail}</label>
     </div> 
-    </form>                                                                        
+    </form>                   
+    </div>                                                     
   )
 }
 

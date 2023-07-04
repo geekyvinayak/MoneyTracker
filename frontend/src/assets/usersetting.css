@@ -1,0 +1,19 @@
+.user-Settings {
+    border: 2px solid black;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.user-Settings form{
+    width: 70%;
+}
+
+.user-SettingsItem {
+    /* border: 2px solid black; */
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 15px;
+    /* align-items: self-end; */
+}

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import { MyContext } from "./context/Context";
@@ -12,6 +12,10 @@ function Editableinputs({ text,field }) {
   function handleChange(event) {
     setchanges(event.target.value)
   }
+
+  useEffect(() => {
+    setchanges(text)
+  }, [])
 
   const saved = async(e) =>{
     const token = localStorage.getItem("token") 
@@ -56,7 +60,6 @@ function Editableinputs({ text,field }) {
           <button onClick={saved}>saved</button>
         </div>
       )}
-      <ToastContainer></ToastContainer>
     </>
   );
 }
