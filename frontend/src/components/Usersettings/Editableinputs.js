@@ -2,8 +2,8 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
-import { MyContext } from "./context/Context";
-
+import { MyContext } from "../context/Context";
+import "../../assets/usersetting.css";
 function Editableinputs({ text,field }) {
   const [type, settype] = useState("label");
   const [changes, setchanges] = useState('');
@@ -26,7 +26,7 @@ function Editableinputs({ text,field }) {
     if(data.stat){
         localStorage.removeItem(field)
         console.log("chss",changes)
-        localStorage.setItem(field,changes)
+        
         verify(token)
         settype("label")
     }
@@ -49,9 +49,9 @@ function Editableinputs({ text,field }) {
   return (
     <>
       {type === "label" ? (
-        <label onClick={() => settype("f")}>{text}</label>
+        <label className="usersettingFields" onClick={() => settype("f")}>{text}</label>
       ) : (
-        <div>
+        <div className="usersettingFields">
           <input
             type="text"
             defaultValue={text}

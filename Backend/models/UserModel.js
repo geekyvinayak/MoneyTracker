@@ -25,6 +25,9 @@ const userSchema = new mongoose.Schema({
     },
     monthlyBudget:{
         type:Number
+    },
+    Wallets:{
+        type:Array
     }
 })
 

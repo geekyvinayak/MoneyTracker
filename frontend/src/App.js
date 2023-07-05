@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import Home from './components/Home';
 import Login from './components/Login';
 import Navbar from './components/Navbar';
-import UserSettings from './components/UserSettings';
+import UserSettings from './components/Usersettings/UserSettings';
 
 function App() {
   return (
