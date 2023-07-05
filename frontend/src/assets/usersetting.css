@@ -17,3 +17,25 @@
     margin-bottom: 15px;
     /* align-items: self-end; */
 }
+
+.usersettingFields{
+    width: 49%;
+}
+.usersettingFields input[type=text]{
+    width:50%;
+}
+
+.wallet{
+    border: 2px solid black;
+}
+.wallet ul{
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+}
+
+.wallet ul li{
+    width: 50%;
+    text-align: center;
+}
+

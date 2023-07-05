@@ -11,25 +11,27 @@ function Contextprovider(props) {
   const [lastName, setlastName] = useState("");
   const [monthCycle,setmonthCycle] = useState(0)
   const [monthlyBudget,setbudget] = useState(0)
+  const [wallets,setwallets] = useState([{"name":"paytm","amt":"500"},{"name":"hdfc","amt":"5070"}])
   const [signup, setsignup] = useState(false);
   const nav = useNavigate();
 
   const setdatas = (data) => {
+    console.log("set:",data)
     setemail(data.email);
-    setfirstName(localStorage.getItem("firstName"));
-    setlastName(localStorage.getItem("lastName"));
-    setmonthCycle(localStorage.getItem("monthCycle"));
-    setbudget(localStorage.getItem("monthlyBudget"))
+    setfirstName(data.firstName);
+    setlastName(data.lastName);
+    setmonthCycle(data.monthCycle);
+    setbudget(data.monthlyBudget)
+    setwallets(data.Wallets)
   }
 
-console.log();
   const verify  = async(token,place) =>{
     console.log("place",place)
     console.log(token)
     let {data} = await axios.get(process.env.REACT_APP_Backend+"verify",{headers:{"token":token}})
-    console.log('da',data.decode);
+    console.log('dauser',data.user);
     if(data.stat){
-        setdatas(data.decode);
+        setdatas(data.user);
         setlogedin(true);
         nav(place)
     }
@@ -44,7 +46,7 @@ console.log();
 
   return (
     <MyContext.Provider
-      value={{ logedin, setlogedin, getemail, setemail, signup, setsignup ,verify,firstName,lastName,monthCycle,monthlyBudget: monthlyBudget}}
+      value={{ logedin, setlogedin, getemail, setemail, signup, setsignup ,verify,firstName,lastName,monthCycle,monthlyBudget,wallets,setwallets}}
     >
       {props.children}
     </MyContext.Provider>

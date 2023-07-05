@@ -84,10 +84,10 @@ function Login() {
       }
       if (data.stat === "sucess") {
         localStorage.setItem("token",data.token)
-        localStorage.setItem("firstName",data.userdata.firstName)
-        localStorage.setItem("lastName",data.userdata.lastName)
-        localStorage.setItem("monthCycle",data.userdata.monthCycle)
-        localStorage.setItem("monthlyBudget",data.userdata.monthlyBudget)
+        // localStorage.setItem("firstName",data.userdata.firstName)
+        // localStorage.setItem("lastName",data.userdata.lastName)
+        // localStorage.setItem("monthCycle",data.userdata.monthCycle)
+        // localStorage.setItem("monthlyBudget",data.userdata.monthlyBudget)
         verify(data.token,"/")
       }
       console.log(data);
