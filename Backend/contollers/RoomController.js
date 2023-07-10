@@ -124,3 +124,31 @@ module.exports.addwallet = async (req, res) => {
     res.send({ stat: false, err: err.message });
   }
 };
+
+module.exports.addTransaction = async (req, res) => {
+  const transaction = req.body;
+  const token = req.headers["token"];
+
+  
+  try {
+    const decode = await jwt.verify(token, "MoneyTrackerjwtencryption@1200");
+    
+    if (decode) {
+      await UserModel.findOneAndUpdate(
+        { email: decode.email },
+        { $push: { transactions: { $each: [transaction], $position: 0 } } }
+      );
+      const data = await UserModel.findOne(
+        { email: decode.email }
+      );
+      res.send({stat: true, decode , transactions: data.transactions});
+      
+    } else {
+      console.log(data)
+      res.send({ stat: false });
+    }
+  } catch (err) {
+    console.log("err",err)
+    res.send({ stat: false, err: err.message });
+  }
+};

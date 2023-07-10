@@ -1,5 +1,5 @@
 const express = require("express");
-const {login, signup, verify,welcome, update,addwallet} = require("../contollers/RoomController");
+const {login, signup, verify,welcome, update,addwallet,addTransaction} = require("../contollers/RoomController");
 
 // const getRooms = require("../contollers/RoomController.js")
 const router = express.Router();
@@ -8,6 +8,8 @@ const router = express.Router();
 router.get("/",welcome);
 
 router.post("/login",login);
+router.post("/login",login);
+router.post("/addtransaction",addTransaction);
 router.post("/signup",signup);
 router.get("/update",update);
 
