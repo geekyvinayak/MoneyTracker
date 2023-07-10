@@ -11,8 +11,9 @@ function Contextprovider(props) {
   const [lastName, setlastName] = useState("");
   const [monthCycle,setmonthCycle] = useState(0)
   const [monthlyBudget,setbudget] = useState(0)
-  const [wallets,setwallets] = useState([{"name":"paytm","amt":"500"},{"name":"hdfc","amt":"5070"}])
+  const [wallets,setwallets] = useState([])
   const [signup, setsignup] = useState(false);
+  const [transactions, settransactions] = useState([]);
   const nav = useNavigate();
 
   const setdatas = (data) => {
@@ -23,6 +24,7 @@ function Contextprovider(props) {
     setmonthCycle(data.monthCycle);
     setbudget(data.monthlyBudget)
     setwallets(data.Wallets)
+    settransactions(data.transactions)
   }
 
   const verify  = async(token,place) =>{
@@ -46,7 +48,7 @@ function Contextprovider(props) {
 
   return (
     <MyContext.Provider
-      value={{ logedin, setlogedin, getemail, setemail, signup, setsignup ,verify,firstName,lastName,monthCycle,monthlyBudget,wallets,setwallets}}
+      value={{ logedin, setlogedin, getemail, setemail, signup, setsignup ,verify,firstName,lastName,monthCycle,monthlyBudget,wallets,setwallets,transactions, settransactions}}
     >
       {props.children}
     </MyContext.Provider>
