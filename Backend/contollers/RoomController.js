@@ -128,8 +128,8 @@ module.exports.addwallet = async (req, res) => {
 module.exports.addTransaction = async (req, res) => {
   const transaction = req.body;
   const token = req.headers["token"];
+  const {wallet} = transaction;
 
-  
   try {
     const decode = await jwt.verify(token, "MoneyTrackerjwtencryption@1200");
     
@@ -142,8 +142,8 @@ module.exports.addTransaction = async (req, res) => {
         { email: decode.email }
       );
       res.send({stat: true, decode , transactions: data.transactions});
-      
-    } else {
+    } 
+    else {
       console.log(data)
       res.send({ stat: false });
     }

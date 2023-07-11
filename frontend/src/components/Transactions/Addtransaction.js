@@ -4,69 +4,92 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 function Addtransaction() {
+  const { setwallets, verify, transactions, settransactions, wallets } =
+    useContext(MyContext);
   const [Active, setactive] = useState(false);
   const [usedwallet, setusedwallet] = useState("");
+  const [description, setdescription] = useState("");
   const [amount, setamount] = useState(0);
-  const [transactionType, settransactionType] = useState(0);
-  const { setwallets , verify,transactions, settransactions} = useContext(MyContext);
+  const [transactionType, settransactionType] = useState("expense");
   
+
   function handlewallet(event) {
-    setusedwallet(event.target.value)
+    console.log(event.target.value)
+    setusedwallet(event.target.value);
   }
 
   function handleamount(event) {
-    setamount(event.target.value)
+    setamount(event.target.value);
   }
 
   function handletype(event) {
-    settransactionType(event.target.value)
+    console.log(event.target.value)
+    settransactionType(event.target.value);
   }
-  
-
-  const saved = async(e) =>{
-    const token = localStorage.getItem("token") 
-    const bag={amount:amount,wallet:usedwallet,type:transactionType};
-    let {data} = await axios.post(process.env.REACT_APP_Backend+"addtransaction",bag,{headers:{"token":token}})
-    
-
-    console.log("td",data)
-    if(data.stat){
-      settransactions(data.transactions)
-        toast.success("Transaction added!", {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-    }
-    else{
-        toast.error("Something Went wrong!", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          verify(token,"/usersettings")
-    }
+  function handledescription(event) {
+    setdescription(event.target.value);
   }
+
+  const saved = async (e) => {
+    const token = localStorage.getItem("token");
+    const bag = {
+      amount: amount,
+      wallet: usedwallet,
+      type: transactionType,
+      description: description,
+    };
+    let { data } = await axios.post(
+      process.env.REACT_APP_Backend + "addtransaction",
+      bag,
+      { headers: { token: token } }
+    );
+
+    console.log("td", data);
+    if (data.stat) {
+      settransactions(data.transactions);
+      toast.success("Transaction added!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      console.log(data.err)
+      toast.error("Something Went wrong!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      // verify(token, "/usersettings");
+    }
+  };
   return (
     <>
       {Active ? (
         <div>
           <ul>
             <li>
+              <select name="type" onChange={(e)=>handletype(e)}>
+                
+              <option value="expense">expense</option>
+              <option value="income">income</option>
+              </select>
+              
+            </li>
+            <li>
               <input
                 type="text"
-                onChange={handletype}
-                placeholder="enter wallet name"
+                onChange={handledescription}
+                placeholder="enter description"
               />
             </li>
             <li>
@@ -77,19 +100,28 @@ function Addtransaction() {
               />
             </li>
             <li>
-              <input
-                type="text"
-                onChange={handlewallet}
-                placeholder="enter wallet name"
-              />
+              <select name="wallet" onChange={handlewallet}>
+                {wallets?.map((ele) => (
+                  <option value={ele.name}>{ele.name}</option>
+                ))}
+              </select>
             </li>
           </ul>
-          <button onClick={() => {saved();setactive(false)}}>Save</button>
+          <button
+            onClick={() => {
+              saved();
+              setactive(false);
+            }}
+          >
+            Save
+          </button>
           <button onClick={() => setactive(false)}>Cancel</button>
         </div>
       ) : (
-        <button onClick={() => setactive(true)}>Add transaction</button>
+        <button onClick={() => {setactive(true);setusedwallet(wallets[0]?.name)}}>Add transaction</button>
       )}
+
+      <div>wallet : {usedwallet}</div>
     </>
   );
 }
