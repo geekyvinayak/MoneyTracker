@@ -7,7 +7,7 @@ function Addtransaction() {
   const { setwallets, verify, transactions, settransactions, wallets } =
     useContext(MyContext);
   const [Active, setactive] = useState(false);
-  const [usedwallet, setusedwallet] = useState("");
+  const [usedwallet, setusedwallet] = useState(0);
   const [description, setdescription] = useState("");
   const [amount, setamount] = useState(0);
   const [transactionType, settransactionType] = useState("expense");
@@ -58,8 +58,7 @@ function Addtransaction() {
         theme: "light",
       });
     } else {
-      console.log(data.err)
-      toast.error("Something Went wrong!", {
+      toast.error(data.message, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -101,8 +100,8 @@ function Addtransaction() {
             </li>
             <li>
               <select name="wallet" onChange={handlewallet}>
-                {wallets?.map((ele) => (
-                  <option value={ele.name}>{ele.name}</option>
+                {wallets?.map((ele,index) => (
+                  <option value={index}>{ele.name}</option>
                 ))}
               </select>
             </li>
@@ -118,7 +117,7 @@ function Addtransaction() {
           <button onClick={() => setactive(false)}>Cancel</button>
         </div>
       ) : (
-        <button onClick={() => {setactive(true);setusedwallet(wallets[0]?.name)}}>Add transaction</button>
+        <button onClick={() => {setactive(true);}}>Add transaction</button>
       )}
 
       <div>wallet : {usedwallet}</div>

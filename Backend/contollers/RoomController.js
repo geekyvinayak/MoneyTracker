@@ -19,7 +19,7 @@ module.exports.login = async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         monthCycle: user.monthCycle,
-        monthlyBudget : user.monthlyBudget
+        monthlyBudget: user.monthlyBudget,
       };
       const token = jwt.sign(
         {
@@ -63,9 +63,9 @@ module.exports.verify = async (req, res) => {
     const decode = await jwt.verify(token, "MoneyTrackerjwtencryption@1200");
     if (decode) {
       const user = await UserModel.findOne({ email: decode.email });
-      user.password="";
-      console.log("tttt",typeof(user),user)
-      res.send({ stat: true, decode , user });
+      user.password = "";
+      console.log("tttt", typeof user, user);
+      res.send({ stat: true, decode, user });
     } else {
       res.send({ stat: false });
     }
@@ -85,9 +85,9 @@ module.exports.update = async (req, res) => {
     if (decode) {
       const data = await UserModel.findOneAndUpdate(
         { email: decode.email },
-        { $set: { [field] : updates } }
+        { $set: { [field]: updates } }
       );
-      res.send({stat: true, decode});
+      res.send({ stat: true, decode });
     } else {
       res.send({ stat: false });
     }
@@ -103,24 +103,21 @@ module.exports.addwallet = async (req, res) => {
 
   try {
     const decode = await jwt.verify(token, "MoneyTrackerjwtencryption@1200");
-    
+
     if (decode) {
-       await UserModel.findOneAndUpdate(
+      await UserModel.findOneAndUpdate(
         { email: decode.email },
-        { $push: { Wallets: {"name":walletname,"amount":amount}}
-       }
+        { $push: { Wallets: { name: walletname, amount: parseInt(amount) } } }
       );
-      const data = await UserModel.findOne(
-        { email: decode.email }
-      );
-      console.log("data is king",data)
-      res.send({stat: true, decode , wallets: data.Wallets});
+      const data = await UserModel.findOne({ email: decode.email });
+      console.log("data is king", data);
+      res.send({ stat: true, decode, wallets: data.Wallets });
     } else {
-      console.log(data)
+      console.log(data);
       res.send({ stat: false });
     }
   } catch (err) {
-    console.log("err",err)
+    console.log("err", err);
     res.send({ stat: false, err: err.message });
   }
 };
@@ -128,27 +125,40 @@ module.exports.addwallet = async (req, res) => {
 module.exports.addTransaction = async (req, res) => {
   const transaction = req.body;
   const token = req.headers["token"];
-  const {wallet} = transaction;
-
+  const { wallet } = transaction;
+  console.log(transaction);
   try {
     const decode = await jwt.verify(token, "MoneyTrackerjwtencryption@1200");
-    
+
     if (decode) {
-      await UserModel.findOneAndUpdate(
-        { email: decode.email },
-        { $push: { transactions: { $each: [transaction], $position: 0 } } }
+      const change = parseInt(transaction.amount);
+
+      const resp = await UserModel.findOneAndUpdate(
+        { email: decode.email, [`Wallets.${wallet}.amount`]: { $gt: change } },
+        {
+          $inc: {
+            [`Wallets.${wallet}.amount`]: -change,
+          },
+
+          $push: { transactions: { $each: [transaction], $position: 0 } },
+        }
       );
-      const data = await UserModel.findOne(
-        { email: decode.email }
-      );
-      res.send({stat: true, decode , transactions: data.transactions});
-    } 
-    else {
-      console.log(data)
-      res.send({ stat: false });
+      if (resp !== null) {
+        const data = await UserModel.findOne({ email: decode.email });
+        res.send({ stat: true, decode, transactions: data.transactions });
+      } else {
+        res.send({
+          stat: false,
+          decode,
+          message: "Amount is greater than Balance",
+        });
+      }
+    } else {
+      console.log(data);
+      res.send({ stat: false, message: "something went wrong" });
     }
   } catch (err) {
-    console.log("err",err)
-    res.send({ stat: false, err: err.message });
+    console.log("err", err);
+    res.send({ stat: false, message: err.message });
   }
 };
