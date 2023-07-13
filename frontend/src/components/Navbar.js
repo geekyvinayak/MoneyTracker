@@ -27,7 +27,7 @@ const Navbar = () => {
                   <button
                     onClick={() => {
                       localStorage.clear();
-                      console.log("ha hua click");
+                    
                       nav("/login");
                     }}
                   >
@@ -68,7 +68,7 @@ const Navbar = () => {
                       <li>
                         <button className="menu__item"
                           onClick={() => {
-                            console.log("ha hua click");
+                          
                             localStorage.removeItem("token");
                             nav("/");
                           }}

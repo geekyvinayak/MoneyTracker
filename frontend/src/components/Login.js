@@ -52,7 +52,7 @@ function Login() {
         });
         setsignup(false);
       }
-      console.log(data);
+      
     } else {
       let { data } = await axios.post(
         process.env.REACT_APP_Backend + "login",
@@ -90,7 +90,7 @@ function Login() {
         // localStorage.setItem("monthlyBudget",data.userdata.monthlyBudget)
         verify(data.token,"/")
       }
-      console.log(data);
+      
     }
   };
 

@@ -14,7 +14,7 @@ function Addtransaction() {
   
 
   function handlewallet(event) {
-    console.log(event.target.value)
+  
     setusedwallet(event.target.value);
   }
 
@@ -23,7 +23,7 @@ function Addtransaction() {
   }
 
   function handletype(event) {
-    console.log(event.target.value)
+  
     settransactionType(event.target.value);
   }
   function handledescription(event) {
@@ -44,7 +44,7 @@ function Addtransaction() {
       { headers: { token: token } }
     );
 
-    console.log("td", data);
+
     if (data.stat) {
       settransactions(data.transactions);
       toast.success("Transaction added!", {

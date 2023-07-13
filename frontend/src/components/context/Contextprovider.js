@@ -17,7 +17,7 @@ function Contextprovider(props) {
   const nav = useNavigate();
 
   const setdatas = (data) => {
-    console.log("set:",data)
+    
     setemail(data.email);
     setfirstName(data.firstName);
     setlastName(data.lastName);
@@ -28,10 +28,10 @@ function Contextprovider(props) {
   }
 
   const verify  = async(token,place) =>{
-    console.log("place",place)
-    console.log(token)
+    
+  
     let {data} = await axios.get(process.env.REACT_APP_Backend+"verify",{headers:{"token":token}})
-    console.log('dauser',data.user);
+    
     if(data.stat){
         setdatas(data.user);
         setlogedin(true);

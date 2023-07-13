@@ -1,7 +1,7 @@
 const express = require("express");
-const {login, signup, verify,welcome, update,addwallet,addTransaction} = require("../contollers/RoomController");
+const {login, signup, verify,welcome, update,addwallet,addTransaction} = require("../contollers/Controller");
 
-// const getRooms = require("../contollers/RoomController.js")
+// const getRooms = require("../contollers/Controller.js")
 const router = express.Router();
 
 // router.get("/getdata",getRoom);

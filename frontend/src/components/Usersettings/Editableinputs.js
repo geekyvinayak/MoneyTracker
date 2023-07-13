@@ -20,12 +20,12 @@ function Editableinputs({ text,field }) {
   const saved = async(e) =>{
     const token = localStorage.getItem("token") 
     e.preventDefault()
-    console.log("changes ",changes)
+   
     let {data} = await axios.get(process.env.REACT_APP_Backend+"update",{headers:{"token":token,"field":field,"updates":changes}})
-    console.log("dd",data.stat)
+    
     if(data.stat){
         localStorage.removeItem(field)
-        console.log("chss",changes)
+       
         
         verify(token)
         settype("label")

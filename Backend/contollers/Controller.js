@@ -64,7 +64,7 @@ module.exports.verify = async (req, res) => {
     if (decode) {
       const user = await UserModel.findOne({ email: decode.email });
       user.password = "";
-      console.log("tttt", typeof user, user);
+
       res.send({ stat: true, decode, user });
     } else {
       res.send({ stat: false });
@@ -81,9 +81,9 @@ module.exports.update = async (req, res) => {
 
   try {
     const decode = await jwt.verify(token, "MoneyTrackerjwtencryption@1200");
-    console.log(decode, "-field-", field, "-updates-", updates);
+   
     if (decode) {
-      const data = await UserModel.findOneAndUpdate(
+      await UserModel.findOneAndUpdate(
         { email: decode.email },
         { $set: { [field]: updates } }
       );
@@ -105,19 +105,18 @@ module.exports.addwallet = async (req, res) => {
     const decode = await jwt.verify(token, "MoneyTrackerjwtencryption@1200");
 
     if (decode) {
-      await UserModel.findOneAndUpdate(
+      const data = await UserModel.findOneAndUpdate(
         { email: decode.email },
-        { $push: { Wallets: { name: walletname, amount: parseInt(amount) } } }
+        { $push: { Wallets: { name: walletname, amount: parseInt(amount) } } },
+        {new: true}
       );
-      const data = await UserModel.findOne({ email: decode.email });
-      console.log("data is king", data);
       res.send({ stat: true, decode, wallets: data.Wallets });
     } else {
-      console.log(data);
+    
       res.send({ stat: false });
     }
   } catch (err) {
-    console.log("err", err);
+   
     res.send({ stat: false, err: err.message });
   }
 };
@@ -126,7 +125,7 @@ module.exports.addTransaction = async (req, res) => {
   const transaction = req.body;
   const token = req.headers["token"];
   const { wallet } = transaction;
-  console.log(transaction);
+
   try {
     const decode = await jwt.verify(token, "MoneyTrackerjwtencryption@1200");
 
@@ -154,11 +153,11 @@ module.exports.addTransaction = async (req, res) => {
         });
       }
     } else {
-      console.log(data);
+      
       res.send({ stat: false, message: "something went wrong" });
     }
   } catch (err) {
-    console.log("err", err);
+   
     res.send({ stat: false, message: err.message });
   }
 };
