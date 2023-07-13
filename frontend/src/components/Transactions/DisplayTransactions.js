@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { MyContext } from '../context/Context';
-
+import "../../assets/transactiondisplay.css";
 
 function DisplayTransactions() {
   const { transactions: transactions ,wallets} = useContext(MyContext);
   return (
-    <div>{transactions?.map((ele)=> <ul><li>{wallets[ele.wallet].name}</li><li>{ele.amount}</li><li>{ele.type}</li><li>{ele.description}</li></ul> )}</div>
+    <table><th>Description</th><th>Wallet</th><th>Amount</th>{transactions?.map((ele)=> <tr><td>{ele.description}</td><td>{wallets[ele.wallet].name}</td><td className={ele.type}>{ele.amount}</td></tr> )}</table>
   )
 }
 

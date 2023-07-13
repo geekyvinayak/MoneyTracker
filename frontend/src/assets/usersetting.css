@@ -10,12 +10,10 @@
 }
 
 .user-SettingsItem {
-    /* border: 2px solid black; */
     display: flex;
     justify-content: space-between;
     width: 100%;
     margin-bottom: 15px;
-    /* align-items: self-end; */
 }
 
 .usersettingFields{
@@ -39,3 +37,32 @@
     text-align: center;
 }
 
+.addWalletButton {
+    color: black;
+    border: 1px solid black;
+    font-weight: bold;
+    border-radius: 6px;
+    padding: 6px 15px;
+    cursor: pointer;
+}
+
+.buttoncontainer {
+    display: flex;
+    margin-bottom: 6px;
+    justify-content: space-evenly;
+}
+
+
+.textfieldcontainer input[type=text] {
+    padding: 0;
+    height: 20px;
+    min-width: 50px;
+}
+
+.walletbox {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 6px;
+}

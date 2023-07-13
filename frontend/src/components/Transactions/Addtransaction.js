@@ -119,8 +119,6 @@ function Addtransaction() {
       ) : (
         <button onClick={() => {setactive(true);}}>Add transaction</button>
       )}
-
-      <div>wallet : {usedwallet}</div>
     </>
   );
 }

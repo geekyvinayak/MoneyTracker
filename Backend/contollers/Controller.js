@@ -128,20 +128,30 @@ module.exports.addTransaction = async (req, res) => {
 
   try {
     const decode = await jwt.verify(token, "MoneyTrackerjwtencryption@1200");
-
+    let resp;
     if (decode) {
       const change = parseInt(transaction.amount);
-
-      const resp = await UserModel.findOneAndUpdate(
+      if(transaction.type == "expense"){
+      resp = await UserModel.findOneAndUpdate(
         { email: decode.email, [`Wallets.${wallet}.amount`]: { $gt: change } },
         {
           $inc: {
             [`Wallets.${wallet}.amount`]: -change,
           },
-
-          $push: { transactions: { $each: [transaction], $position: 0 } },
+          $push: { transactions: { $each: [transaction], $position: 0 } }
         }
-      );
+      );}
+      else{
+        resp = await UserModel.findOneAndUpdate(
+          { email: decode.email },
+          {
+            $inc: {
+              [`Wallets.${wallet}.amount`]: change,
+            },
+            $push: { transactions: { $each: [transaction], $position: 0 } }
+          }
+        );
+      }
       if (resp !== null) {
         const data = await UserModel.findOne({ email: decode.email });
         res.send({ stat: true, decode, transactions: data.transactions });
