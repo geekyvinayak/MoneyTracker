@@ -21,8 +21,10 @@ function Home() {
 
   return (<>
     <div>Welcome, {firstName + " "+ lastName} </div>
+    <div className='transactioncomponentsconainer'>
     <Addtransaction />
     <DisplayTransactions />
+    </div>
     </>
   )
 }

@@ -4,14 +4,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 function Addtransaction() {
-  const { setwallets, verify, transactions, settransactions, wallets } =
+  const { setwallets, verify, transactions, settransactions, wallets,getCurrentDateTime,datetime } =
     useContext(MyContext);
   const [Active, setactive] = useState(false);
   const [usedwallet, setusedwallet] = useState(0);
   const [description, setdescription] = useState("");
   const [amount, setamount] = useState(0);
   const [transactionType, settransactionType] = useState("expense");
-  
 
   function handlewallet(event) {
   
@@ -31,12 +30,15 @@ function Addtransaction() {
   }
 
   const saved = async (e) => {
+    if(description !== "" && amount !== 0 ){
     const token = localStorage.getItem("token");
+    await getCurrentDateTime();
     const bag = {
       amount: amount,
       wallet: usedwallet,
       type: transactionType,
       description: description,
+      date: datetime.date +'/' + datetime.month
     };
     let { data } = await axios.post(
       process.env.REACT_APP_Backend + "addtransaction",
@@ -68,14 +70,27 @@ function Addtransaction() {
         progress: undefined,
         theme: "light",
       });
-      // verify(token, "/usersettings");
+    }
+    setactive(false);
+  }else{
+      toast.error("fields can be empty", {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setactive(true);
     }
   };
   return (
     <>
       {Active ? (
-        <div>
-          <ul>
+        <div className="testtt">
+          
             <li>
               <select name="type" onChange={(e)=>handletype(e)}>
                 
@@ -105,11 +120,11 @@ function Addtransaction() {
                 ))}
               </select>
             </li>
-          </ul>
+      
           <button
             onClick={() => {
               saved();
-              setactive(false);
+              
             }}
           >
             Save
@@ -117,7 +132,7 @@ function Addtransaction() {
           <button onClick={() => setactive(false)}>Cancel</button>
         </div>
       ) : (
-        <button onClick={() => {setactive(true);}}>Add transaction</button>
+        <button className="testtt" onClick={() => {setactive(true);}}>Add transaction</button>
       )}
     </>
   );
