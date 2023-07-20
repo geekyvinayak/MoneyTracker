@@ -17,8 +17,8 @@ router.get("/update",update);
 router.get("/verify",verify);
 router.get("/addwallet",addwallet);
 
-router.get("/loaderio-35be33660b3842463b46b4bbcbf8ef98/",(req,res)=>{res.send("loaderio-35be33660b3842463b46b4bbcbf8ef98")};
-router.post("/loaderio-35be33660b3842463b46b4bbcbf8ef98/",(req,res)=>{res.send("loaderio-35be33660b3842463b46b4bbcbf8ef98")};
+router.get("/loaderio-35be33660b3842463b46b4bbcbf8ef98/",(req,res)=>{res.send("loaderio-35be33660b3842463b46b4bbcbf8ef98")});
+router.post("/loaderio-35be33660b3842463b46b4bbcbf8ef98/",(req,res)=>{res.send("loaderio-35be33660b3842463b46b4bbcbf8ef98")});
 
 
 
