@@ -29,16 +29,17 @@ function Addtransaction() {
     setdescription(event.target.value);
   }
 
-  const saved = async (e) => {
+  const saved = async(e) => {
     if(description !== "" && amount !== 0 ){
     const token = localStorage.getItem("token");
-    await getCurrentDateTime();
+    const datetime = await getCurrentDateTime();
+    const transactiondate = datetime.date +'/'+ datetime.month;
     const bag = {
       amount: amount,
       wallet: usedwallet,
       type: transactionType,
       description: description,
-      date: datetime.date +'/' + datetime.month
+      date: transactiondate
     };
     let { data } = await axios.post(
       process.env.REACT_APP_Backend + "addtransaction",
@@ -91,7 +92,7 @@ function Addtransaction() {
       {Active ? (
         <div className="testtt">
           
-            <li>
+            <li key="typeoftransaction"> 
               <select name="type" onChange={(e)=>handletype(e)}>
                 
               <option value="expense">expense</option>
@@ -99,21 +100,21 @@ function Addtransaction() {
               </select>
               
             </li>
-            <li>
+            <li key="transactiondescription">
               <input
                 type="text"
                 onChange={handledescription}
                 placeholder="enter description"
               />
             </li>
-            <li>
+            <li key="transactionamount">
               <input
                 type="text"
                 onChange={handleamount}
                 placeholder="enter transaction amount"
               />
             </li>
-            <li>
+            <li key="walletused">
               <select name="wallet" onChange={handlewallet}>
                 {wallets?.map((ele,index) => (
                   <option value={index}>{ele.name}</option>

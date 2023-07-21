@@ -59,7 +59,7 @@ function UserSettings() {
     </div>
     <div className="form-container wallet">
       <div><h2>Wallets</h2><AddWallet /></div>
-      <div>{wallets.map(ele => {return(<ul><li>{ele.name}</li><li>{ele.amount}</li></ul>)})}</div>
+      <div>{wallets.map((ele,index) => {return(<ul><li key={index}>{ele.name}</li><li>{ele.amount}</li></ul>)})}</div>
     </div>
     </>
   );

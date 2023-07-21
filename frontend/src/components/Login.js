@@ -108,13 +108,13 @@ function Login() {
     setsignup(!signup);
   };
   return (
-    <div class="login-container">
-      <div class="form-container">
-        <ul>{signup ? <li>Signup</li> : <li>Login</li>}</ul>
+    <div className="login-container">
+      <div className="form-container">
+        <ul>{signup ? <li key="signup">Signup</li> : <li key="login">Login</li>}</ul>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-        {signup?<> <div class="form">
-            <label for="firstname">First Name</label>
+        {signup?<> <div className="form">
+            <label htmlFor="firstname">First Name</label>
             <input
               type="text"
               id="firstname"
@@ -122,8 +122,8 @@ function Login() {
               {...register("firstname",{required:true})}
             />
           </div>
-          <div class="form">
-          <label for="lastname">Last Name</label>
+          <div className="form">
+          <label htmlFor="lastname">Last Name</label>
           <input
             type="text"
             id="lastname"
@@ -131,8 +131,8 @@ function Login() {
             {...register("lastname",{required:true})}
           />
         </div></>:""}
-          <div class="form">
-            <label for="email">Email</label>
+          <div className="form">
+            <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
@@ -140,8 +140,8 @@ function Login() {
               {...register("email",{required:true})}
             />
           </div>
-          <div class="form">
-            <label for="password">Password</label>
+          <div className="form">
+            <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"
@@ -149,10 +149,10 @@ function Login() {
               {...register("password",{required:true})}
             />
           </div>
-          <div class="form-btn">
+          <div className="form-btn">
             <button>Submit</button>
           </div>
-          <div class="form-btn">
+          <div className="form-btn">
             <p>
               {signup ? (
                 <div onClick={changesignup}>Login</div>

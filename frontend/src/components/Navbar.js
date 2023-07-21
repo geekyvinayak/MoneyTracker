@@ -48,15 +48,15 @@ const Navbar = () => {
             </li>
             {logedin ? 
             <li className="responsive-menu">
-              <div class="hamburger-menu">
+              <div className="hamburger-menu">
                 <div className="appname">Money Tracker</div>
                 <input id="menu__toggle" type="checkbox"  />
-                <label class="menu__btn" for="menu__toggle">
+                <label className="menu__btn" htmlFor="menu__toggle">
                   <span></span>
                 </label>
-                <ul class="menu__box">
+                <ul className="menu__box">
                       <li>
-                        <Link to="/home">
+                        <Link to="/">
                           <button className="menu__item" onClick={()=>{(document.getElementById("menu__toggle").checked = false)}}>Home</button>
                         </Link>
                       </li>
@@ -70,7 +70,8 @@ const Navbar = () => {
                           onClick={() => {
                           
                             localStorage.removeItem("token");
-                            nav("/");
+                            verify();
+                            
                           }}
                         >
                           Logout

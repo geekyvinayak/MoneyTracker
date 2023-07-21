@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function Contextprovider(props) {
   const [logedin, setlogedin] = useState(false);
   const [getemail, setemail] = useState("");
-  const [datetime, setdatetime] = useState();
+  
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
   const [monthCycle,setmonthCycle] = useState(0)
@@ -39,17 +39,15 @@ function Contextprovider(props) {
     const minutes = currentDate.getMinutes();
     const seconds = currentDate.getSeconds();
   
-    setdatetime({
+   return  {
       date: date,
       month: month,
       year: year,
       time: `${hours}:${minutes}:${seconds}`
-    });
+    };
   }
 
   const verify  = async(token,place) =>{
-    
-  
     let {data} = await axios.get(process.env.REACT_APP_Backend+"verify",{headers:{"token":token}})
     
     if(data.stat){
@@ -68,7 +66,7 @@ function Contextprovider(props) {
 
   return (
     <MyContext.Provider
-      value={{ logedin, setlogedin, getemail, setemail, signup, setsignup ,verify,firstName,lastName,monthCycle,monthlyBudget,wallets,setwallets,transactions, settransactions,getCurrentDateTime,datetime}}
+      value={{ logedin, setlogedin, getemail, setemail, signup, setsignup ,verify,firstName,lastName,monthCycle,monthlyBudget,wallets,setwallets,transactions, settransactions,getCurrentDateTime}}
     >
       {props.children}
     </MyContext.Provider>
