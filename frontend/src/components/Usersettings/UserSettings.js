@@ -28,8 +28,6 @@ function UserSettings() {
     }
   }, []);
 
- 
-
   return (
     <>
     <div className="form-container user-Settings">

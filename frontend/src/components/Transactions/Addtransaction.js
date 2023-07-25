@@ -33,13 +33,13 @@ function Addtransaction() {
     if(description !== "" && amount !== 0 ){
     const token = localStorage.getItem("token");
     const datetime = await getCurrentDateTime();
-    const transactiondate = datetime.date +'/'+ datetime.month;
+    // const transactiondate = datetime.date +'/'+ datetime.month;
     const bag = {
       amount: amount,
       wallet: usedwallet,
       type: transactionType,
       description: description,
-      date: transactiondate
+      date: datetime
     };
     let { data } = await axios.post(
       process.env.REACT_APP_Backend + "addtransaction",
