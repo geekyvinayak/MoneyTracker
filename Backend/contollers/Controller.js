@@ -77,9 +77,28 @@ module.exports.verify = async (req, res) => {
 module.exports.update = async (req, res) => {
   const token = req.headers["token"];
   let field = req.headers["field"];
-  const updates = req.headers["updates"];
-
+  let updates = req.headers["updates"];
   try {
+  if(field == "monthCycle"){
+    updates = updates.padStart(2, '0');
+    const today = new Date();
+
+    // If the input day is not a number or is outside the valid range (1-31), return null
+    if (isNaN(updates) || updates < 1 || updates > 30) {
+      updates = "01";
+    }
+  
+    // Set the current date to the input day, but keep the month and year unchanged
+    today.setDate(updates);
+  
+    // Get the next month's date
+    today.setMonth(today.getMonth() + 1);
+  
+    // Format the result in "updates/mm/yyyy" format
+    const formattedDate = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth() + 1).toString().padStart(2, '0')}/${today.getFullYear()}`;
+    updates = formattedDate;
+  }
+  
     const decode = await jwt.verify(token, "MoneyTrackerjwtencryption@1200");
    
     if (decode) {
@@ -89,10 +108,10 @@ module.exports.update = async (req, res) => {
       );
       res.send({ stat: true, decode });
     } else {
-      res.send({ stat: false });
+      res.send({ stat: false,message:"Something Went Wrong!!" });
     }
   } catch (err) {
-    res.send({ stat: false, err: err.message });
+    res.send({ stat: false, message: err.message });
   }
 };
 

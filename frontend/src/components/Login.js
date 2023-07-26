@@ -9,18 +9,36 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 function Login() {
-  const { setlogedin, signup, setsignup,verify } = useContext(MyContext);
+  const { setlogedin, signup, setsignup,verify, getCurrentDateTime } = useContext(MyContext);
   //   const [signup,setsignup] = useState(false);
 
   const nav = useNavigate();
   const { register, handleSubmit } = useForm();
 
+  function getNextMonthDate(dateString) {
+    const [day, month, year] = dateString.split('/').map(Number);
+  const inputDate = new Date(year, month - 1, day); // Note: Month is 0-based in JavaScript Date constructor
+
+  // Get the date for the next month
+  const nextMonth = inputDate.getMonth() === 11 ? 0 : inputDate.getMonth() + 1;
+  const nextYear = inputDate.getMonth() === 11 ? inputDate.getFullYear() + 1 : inputDate.getFullYear();
+
+  // Create the next month's date
+  const nextMonthDate = new Date(nextYear, nextMonth, day);
+
+  // Format the result in "dd/mm/yyyy" format
+  const formattedDate = `${nextMonthDate.getDate().toString().padStart(2, '0')}/${(nextMonthDate.getMonth() + 1).toString().padStart(2, '0')}/${nextMonthDate.getFullYear()}`;
+  return formattedDate;
+  }
+
   const onSubmit = async (data) => {
     const email = data.email;
     const password = data.password;
     const firstName = data.firstname;
-    const lastName = data.lastname
-    const bag = { email: email, password: password,firstName:firstName,lastName:lastName,monthCycle:"1",monthlyBudget:"0" };
+    const lastName = data.lastname;
+    const datelatest = getCurrentDateTime()
+    const nextmonth = getNextMonthDate(datelatest.date + "/" + datelatest.month + "/" + datelatest.year)
+    const bag = { email: email, password: password,firstName:firstName,lastName:lastName,monthCycle:nextmonth,monthlyBudget:"0" };
     
     if (signup) {
       let { data } = await axios.post(

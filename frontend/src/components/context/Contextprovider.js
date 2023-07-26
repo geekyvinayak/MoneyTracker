@@ -10,7 +10,7 @@ function Contextprovider(props) {
 
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
-  const [monthCycle, setmonthCycle] = useState(0);
+  const [monthCycle, setmonthCycle] = useState("");
   const [monthlyBudget, setbudget] = useState(0);
   const [dailyBudget, setdailyBudget] = useState(0);
   const [wallets, setwallets] = useState([]);
@@ -22,7 +22,7 @@ function Contextprovider(props) {
     setemail(data.email);
     setfirstName(data.firstName);
     setlastName(data.lastName);
-    setmonthCycle(data.monthCycle);
+    setmonthCycle(data.monthCycle.substring(0, 2));
     setbudget(data.monthlyBudget);
     setwallets(data.Wallets);
     settransactions(data.transactions);

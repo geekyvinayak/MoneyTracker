@@ -31,7 +31,7 @@ function Editableinputs({ text,field }) {
         settype("label")
     }
     else{
-        toast.error("Something Went wrong!", {
+        toast.error(data?.message, {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
