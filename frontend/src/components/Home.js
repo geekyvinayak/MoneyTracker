@@ -5,7 +5,7 @@ import Addtransaction from './Transactions/Addtransaction';
 import DisplayTransactions from './Transactions/DisplayTransactions';
 
 function Home() {
-    const { setlogedin, firstName, lastName,verify } = useContext(MyContext);
+    const { setlogedin, firstName, lastName,verify , dailyBudget} = useContext(MyContext);
     const  nav=useNavigate();
    
     useEffect(() => {
@@ -20,7 +20,7 @@ function Home() {
       }, [])
 
   return (<>
-    <div>Welcome, {firstName + " "+ lastName} </div>
+    <div>Welcome, {firstName + " "+ lastName + "Your today budget is  " + dailyBudget } </div>
     <div className='transactioncomponentsconainer'>
     <Addtransaction />
     <DisplayTransactions />
