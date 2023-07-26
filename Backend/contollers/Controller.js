@@ -85,7 +85,7 @@ module.exports.update = async (req, res) => {
 
     // If the input day is not a number or is outside the valid range (1-31), return null
     if (isNaN(updates) || updates < 1 || updates > 30) {
-      updates = "01";
+      throw new Error("invalid date")
     }
   
     // Set the current date to the input day, but keep the month and year unchanged

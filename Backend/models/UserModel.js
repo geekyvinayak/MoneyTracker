@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  dailyexpense: {
+    type: Number,
+    default: 0
+  },
   transactions: {
     type: Array,
   },
