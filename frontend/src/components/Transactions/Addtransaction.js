@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 function Addtransaction() {
-  const { setwallets, verify, transactions, settransactions, wallets,getCurrentDateTime,datetime } =
+  const { setwallets, verify, transactions, settransactions, wallets,getCurrentDateTime,datetime,setdailyexpense } =
     useContext(MyContext);
   const [Active, setactive] = useState(false);
   const [usedwallet, setusedwallet] = useState(0);
@@ -50,6 +50,7 @@ function Addtransaction() {
 
     if (data.stat) {
       settransactions(data.transactions);
+      setdailyexpense(data.dailyexpense)
       toast.success("Transaction added!", {
         position: "top-right",
         autoClose: 2000,

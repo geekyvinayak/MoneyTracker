@@ -80,23 +80,37 @@ module.exports.update = async (req, res) => {
   let updates = req.headers["updates"];
   try {
   if(field == "monthCycle"){
-    updates = updates.padStart(2, '0');
-    const today = new Date();
-
-    // If the input day is not a number or is outside the valid range (1-31), return null
     if (isNaN(updates) || updates < 1 || updates > 30) {
-      throw new Error("invalid date")
+      throw new Error("invalid date it must be between 1 and 30")
     }
-  
-    // Set the current date to the input day, but keep the month and year unchanged
-    today.setDate(updates);
-  
-    // Get the next month's date
-    today.setMonth(today.getMonth() + 1);
-  
-    // Format the result in "updates/mm/yyyy" format
-    const formattedDate = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth() + 1).toString().padStart(2, '0')}/${today.getFullYear()}`;
+  // Get today's date
+  const today = new Date();
+  const currentDay = today.getDate();
+  const inputDay = parseInt(updates, 10);
+
+  // Compare the input date with today's date
+  if (inputDay <= currentDay) {
+    // If the input date is equal or less than today's date, use the next month and same year
+    let nextMonth = today.getMonth() + 2;
+    let nextYear = today.getFullYear();
+
+    if (nextMonth > 12) {
+      // If the next month exceeds December, adjust month and year accordingly
+      nextMonth = 1; // January (1-based month)
+      nextYear += 1;
+    }
+
+    const outputDay = updates.toString().padStart(2, '0');
+    const outputMonth = nextMonth.toString().padStart(2, '0');
+    const formattedDate = `${outputDay}/${outputMonth}/${nextYear}`;
     updates = formattedDate;
+  } else {
+    // If the input date is bigger than today's date, use the current month and year
+    const currentMonth = today.getMonth() + 1; // Adding 1 to get the correct month (1-based).
+    const currentYear = today.getFullYear();
+    const formattedDate = `${updates.toString().padStart(2, '0')}/${currentMonth.toString().padStart(2, '0')}/${currentYear}`;
+    updates = formattedDate;
+  }
   }
   
     const decode = await jwt.verify(token, "MoneyTrackerjwtencryption@1200");
@@ -156,6 +170,7 @@ module.exports.addTransaction = async (req, res) => {
         {
           $inc: {
             [`Wallets.${wallet}.amount`]: -change,
+            dailyexpense: change
           },
           $push: { transactions: { $each: [transaction], $position: 0 } }
         }
@@ -173,7 +188,7 @@ module.exports.addTransaction = async (req, res) => {
       }
       if (resp !== null) {
         const data = await UserModel.findOne({ email: decode.email });
-        res.send({ stat: true, decode, transactions: data.transactions });
+        res.send({ stat: true, decode, transactions: data.transactions,dailyexpense:data.dailyexpense});
       } else {
         res.send({
           stat: false,
