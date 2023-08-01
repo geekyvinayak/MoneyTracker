@@ -14,7 +14,7 @@ function UserSettings() {
     verify,
     monthCycle,
     monthlyBudget,
-    wallets
+    wallets,
   } = useContext(MyContext);
   const nav = useNavigate();
 
@@ -30,37 +30,44 @@ function UserSettings() {
 
   return (
     <>
-    <div className="form-container user-Settings">
-      <form>
-        <div className="user-SettingsItem">
-          <label className="usersettingFields">First Name</label>
-          <Editableinputs text={firstName} field={"firstName"} />
+      <div className="form-container user-Settings">
+        <form>
+          <div className="user-SettingsItem">
+            <label className="usersettingFields">First Name</label>
+            <Editableinputs text={firstName} field={"firstName"} />
+          </div>
+          <div className="user-SettingsItem">
+            <label className="usersettingFields">Last Name</label>
+            <Editableinputs text={lastName} field={"lastName"} />
+          </div>
+          <div className="user-SettingsItem">
+            <label className="usersettingFields">Month Cycle</label>
+            <Editableinputs text={monthCycle} field={"monthCycle"} />
+          </div>
+          <div className="user-SettingsItem">
+            <label className="usersettingFields">Email</label>
+            <label className="usersettingFields">{getemail}</label>
+          </div>
+        </form>
+      </div>
+      <div className="form-container wallet">
+        <div>
+          <h2>Wallets</h2>
+          <AddWallet />
         </div>
-        <div className="user-SettingsItem">
-          <label className="usersettingFields">Last Name</label>
-          <Editableinputs text={lastName} field={"lastName"} />
+        <div>
+          {wallets.map((ele, index) => {
+            return (
+              <ul>
+                <li key={index}>{ele.name}</li>
+                <li>&#8377; {ele.amount}</li>
+              </ul>
+            );
+          })}
         </div>
-        <div className="user-SettingsItem">
-          <label className="usersettingFields">Month Cycle</label>
-          <Editableinputs text={monthCycle} field={"monthCycle"} />
-        </div>
-
-        <div className="user-SettingsItem">
-          <label className="usersettingFields">Month Budget</label>
-          <Editableinputs text={monthlyBudget} field={"monthlyBudget"} />
-        </div>
-        <div className="user-SettingsItem">
-          <label className="usersettingFields">Email</label>
-          <label className="usersettingFields">{getemail}</label>
-        </div>
-      </form>
-    </div>
-    <div className="form-container wallet">
-      <div><h2>Wallets</h2><AddWallet /></div>
-      <div>{wallets.map((ele,index) => {return(<ul><li key={index}>{ele.name}</li><li>{ele.amount}</li></ul>)})}</div>
-    </div>
+      </div>
     </>
   );
 }
 
-export default UserSettings
+export default UserSettings;

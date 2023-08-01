@@ -9,26 +9,36 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 function Login() {
-  const { setlogedin, signup, setsignup,verify, getCurrentDateTime } = useContext(MyContext);
+  const { setlogedin, signup, setsignup, verify, getCurrentDateTime } =
+    useContext(MyContext);
   //   const [signup,setsignup] = useState(false);
 
   const nav = useNavigate();
   const { register, handleSubmit } = useForm();
 
   function getNextMonthDate(dateString) {
-    const [day, month, year] = dateString.split('/').map(Number);
-  const inputDate = new Date(year, month - 1, day); // Note: Month is 0-based in JavaScript Date constructor
+    const [day, month, year] = dateString.split("/").map(Number);
+    const inputDate = new Date(year, month - 1, day); // Note: Month is 0-based in JavaScript Date constructor
 
-  // Get the date for the next month
-  const nextMonth = inputDate.getMonth() === 11 ? 0 : inputDate.getMonth() + 1;
-  const nextYear = inputDate.getMonth() === 11 ? inputDate.getFullYear() + 1 : inputDate.getFullYear();
+    // Get the date for the next month
+    const nextMonth =
+      inputDate.getMonth() === 11 ? 0 : inputDate.getMonth() + 1;
+    const nextYear =
+      inputDate.getMonth() === 11
+        ? inputDate.getFullYear() + 1
+        : inputDate.getFullYear();
 
-  // Create the next month's date
-  const nextMonthDate = new Date(nextYear, nextMonth, day);
+    // Create the next month's date
+    const nextMonthDate = new Date(nextYear, nextMonth, day);
 
-  // Format the result in "dd/mm/yyyy" format
-  const formattedDate = `${nextMonthDate.getDate().toString().padStart(2, '0')}/${(nextMonthDate.getMonth() + 1).toString().padStart(2, '0')}/${nextMonthDate.getFullYear()}`;
-  return formattedDate;
+    // Format the result in "dd/mm/yyyy" format
+    const formattedDate = `${nextMonthDate
+      .getDate()
+      .toString()
+      .padStart(2, "0")}/${(nextMonthDate.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}/${nextMonthDate.getFullYear()}`;
+    return formattedDate;
   }
 
   const onSubmit = async (data) => {
@@ -36,10 +46,19 @@ function Login() {
     const password = data.password;
     const firstName = data.firstname;
     const lastName = data.lastname;
-    const datelatest = getCurrentDateTime()
-    const nextmonth = getNextMonthDate(datelatest.date + "/" + datelatest.month + "/" + datelatest.year)
-    const bag = { email: email, password: password,firstName:firstName,lastName:lastName,monthCycle:nextmonth,monthlyBudget:"0" };
-    
+    const datelatest = getCurrentDateTime();
+    const nextmonth = getNextMonthDate(
+      datelatest.date + "/" + datelatest.month + "/" + datelatest.year
+    );
+    const bag = {
+      email: email,
+      password: password,
+      firstName: firstName,
+      lastName: lastName,
+      monthCycle: nextmonth,
+      monthlyBudget: "0",
+    };
+
     if (signup) {
       let { data } = await axios.post(
         process.env.REACT_APP_Backend + "signup",
@@ -70,7 +89,6 @@ function Login() {
         });
         setsignup(false);
       }
-      
     } else {
       let { data } = await axios.post(
         process.env.REACT_APP_Backend + "login",
@@ -101,26 +119,24 @@ function Login() {
         });
       }
       if (data.stat === "sucess") {
-        localStorage.setItem("token",data.token)
+        localStorage.setItem("token", data.token);
         // localStorage.setItem("firstName",data.userdata.firstName)
         // localStorage.setItem("lastName",data.userdata.lastName)
         // localStorage.setItem("monthCycle",data.userdata.monthCycle)
         // localStorage.setItem("monthlyBudget",data.userdata.monthlyBudget)
-        verify(data.token,"/")
+        verify(data.token, "/");
       }
-      
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token){
-        verify(token,"/");
+    const token = localStorage.getItem("token");
+    if (token) {
+      verify(token, "/");
+    } else {
+      setlogedin(false);
     }
-    else{
-        setlogedin(false);
-    }
-  }, [])
+  }, []);
 
   const changesignup = () => {
     setsignup(!signup);
@@ -128,34 +144,43 @@ function Login() {
   return (
     <div className="login-container">
       <div className="form-container">
-        <ul>{signup ? <li key="signup">Signup</li> : <li key="login">Login</li>}</ul>
+        <ul>
+          {signup ? <li key="signup">Signup</li> : <li key="login">Login</li>}
+        </ul>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-        {signup?<> <div className="form">
-            <label htmlFor="firstname">First Name</label>
-            <input
-              type="text"
-              id="firstname"
-              placeholder="Enter Email"
-              {...register("firstname",{required:true})}
-            />
-          </div>
-          <div className="form">
-          <label htmlFor="lastname">Last Name</label>
-          <input
-            type="text"
-            id="lastname"
-            placeholder="Enter Email"
-            {...register("lastname",{required:true})}
-          />
-        </div></>:""}
+          {signup ? (
+            <>
+              {" "}
+              <div className="form">
+                <label htmlFor="firstname">First Name</label>
+                <input
+                  type="text"
+                  id="firstname"
+                  placeholder="Enter Email"
+                  {...register("firstname", { required: true })}
+                />
+              </div>
+              <div className="form">
+                <label htmlFor="lastname">Last Name</label>
+                <input
+                  type="text"
+                  id="lastname"
+                  placeholder="Enter Email"
+                  {...register("lastname", { required: true })}
+                />
+              </div>
+            </>
+          ) : (
+            ""
+          )}
           <div className="form">
             <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
               placeholder="Enter Email"
-              {...register("email",{required:true})}
+              {...register("email", { required: true })}
             />
           </div>
           <div className="form">
@@ -164,7 +189,7 @@ function Login() {
               type="password"
               id="password"
               placeholder="Enter Password"
-              {...register("password",{required:true})}
+              {...register("password", { required: true })}
             />
           </div>
           <div className="form-btn">

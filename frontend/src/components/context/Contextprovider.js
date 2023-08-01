@@ -11,24 +11,22 @@ function Contextprovider(props) {
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
   const [monthCycle, setmonthCycle] = useState("");
-  const [monthlyBudget, setbudget] = useState(0);
   const [dailyBudget, setdailyBudget] = useState(0);
   const [wallets, setwallets] = useState([]);
   const [signup, setsignup] = useState(false);
   const [dailyexpense, setdailyexpense] = useState(0);
   const [transactions, settransactions] = useState([]);
   const nav = useNavigate();
-  
+
   const setdatas = (data) => {
     setemail(data.email);
     setfirstName(data.firstName);
     setlastName(data.lastName);
     setmonthCycle(data.monthCycle.substring(0, 2));
-    setbudget(data.monthlyBudget);
     setwallets(data.Wallets);
     settransactions(data.transactions);
-    setdailyBudget(data.budgetOfTheDay)
-    setdailyexpense(data.dailyexpense)
+    setdailyBudget(data.budgetOfTheDay);
+    setdailyexpense(data.dailyexpense);
   };
 
   function getCurrentDateTime() {
@@ -100,7 +98,6 @@ function Contextprovider(props) {
         firstName,
         lastName,
         monthCycle,
-        monthlyBudget,
         wallets,
         setwallets,
         transactions,
@@ -109,7 +106,7 @@ function Contextprovider(props) {
         getDateDifference,
         dailyBudget,
         dailyexpense,
-        setdailyexpense
+        setdailyexpense,
       }}
     >
       {props.children}

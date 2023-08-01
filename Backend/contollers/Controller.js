@@ -79,42 +79,46 @@ module.exports.update = async (req, res) => {
   let field = req.headers["field"];
   let updates = req.headers["updates"];
   try {
-  if(field == "monthCycle"){
-    if (isNaN(updates) || updates < 1 || updates > 30) {
-      throw new Error("invalid date it must be between 1 and 30")
+    if (field == "monthCycle") {
+      if (isNaN(updates) || updates < 1 || updates > 30) {
+        throw new Error("invalid date it must be between 1 and 30");
+      }
+      // Get today's date
+      const today = new Date();
+      const currentDay = today.getDate();
+      const inputDay = parseInt(updates, 10);
+
+      // Compare the input date with today's date
+      if (inputDay <= currentDay) {
+        // If the input date is equal or less than today's date, use the next month and same year
+        let nextMonth = today.getMonth() + 2;
+        let nextYear = today.getFullYear();
+
+        if (nextMonth > 12) {
+          // If the next month exceeds December, adjust month and year accordingly
+          nextMonth = 1; // January (1-based month)
+          nextYear += 1;
+        }
+
+        const outputDay = updates.toString().padStart(2, "0");
+        const outputMonth = nextMonth.toString().padStart(2, "0");
+        const formattedDate = `${outputDay}/${outputMonth}/${nextYear}`;
+        updates = formattedDate;
+      } else {
+        // If the input date is bigger than today's date, use the current month and year
+        const currentMonth = today.getMonth() + 1; // Adding 1 to get the correct month (1-based).
+        const currentYear = today.getFullYear();
+        const formattedDate = `${updates
+          .toString()
+          .padStart(2, "0")}/${currentMonth
+          .toString()
+          .padStart(2, "0")}/${currentYear}`;
+        updates = formattedDate;
+      }
     }
-  // Get today's date
-  const today = new Date();
-  const currentDay = today.getDate();
-  const inputDay = parseInt(updates, 10);
 
-  // Compare the input date with today's date
-  if (inputDay <= currentDay) {
-    // If the input date is equal or less than today's date, use the next month and same year
-    let nextMonth = today.getMonth() + 2;
-    let nextYear = today.getFullYear();
-
-    if (nextMonth > 12) {
-      // If the next month exceeds December, adjust month and year accordingly
-      nextMonth = 1; // January (1-based month)
-      nextYear += 1;
-    }
-
-    const outputDay = updates.toString().padStart(2, '0');
-    const outputMonth = nextMonth.toString().padStart(2, '0');
-    const formattedDate = `${outputDay}/${outputMonth}/${nextYear}`;
-    updates = formattedDate;
-  } else {
-    // If the input date is bigger than today's date, use the current month and year
-    const currentMonth = today.getMonth() + 1; // Adding 1 to get the correct month (1-based).
-    const currentYear = today.getFullYear();
-    const formattedDate = `${updates.toString().padStart(2, '0')}/${currentMonth.toString().padStart(2, '0')}/${currentYear}`;
-    updates = formattedDate;
-  }
-  }
-  
     const decode = await jwt.verify(token, "MoneyTrackerjwtencryption@1200");
-   
+
     if (decode) {
       await UserModel.findOneAndUpdate(
         { email: decode.email },
@@ -122,7 +126,7 @@ module.exports.update = async (req, res) => {
       );
       res.send({ stat: true, decode });
     } else {
-      res.send({ stat: false,message:"Something Went Wrong!!" });
+      res.send({ stat: false, message: "Something Went Wrong!!" });
     }
   } catch (err) {
     res.send({ stat: false, message: err.message });
@@ -141,15 +145,13 @@ module.exports.addwallet = async (req, res) => {
       const data = await UserModel.findOneAndUpdate(
         { email: decode.email },
         { $push: { Wallets: { name: walletname, amount: parseInt(amount) } } },
-        {new: true}
+        { new: true }
       );
       res.send({ stat: true, decode, wallets: data.Wallets });
     } else {
-    
       res.send({ stat: false });
     }
   } catch (err) {
-   
     res.send({ stat: false, err: err.message });
   }
 };
@@ -164,31 +166,39 @@ module.exports.addTransaction = async (req, res) => {
     let resp;
     if (decode) {
       const change = parseInt(transaction.amount);
-      if(transaction.type == "expense"){
-      resp = await UserModel.findOneAndUpdate(
-        { email: decode.email, [`Wallets.${wallet}.amount`]: { $gt: change } },
-        {
-          $inc: {
-            [`Wallets.${wallet}.amount`]: -change,
-            dailyexpense: change
+      if (transaction.type == "expense") {
+        resp = await UserModel.findOneAndUpdate(
+          {
+            email: decode.email,
+            [`Wallets.${wallet}.amount`]: { $gt: change },
           },
-          $push: { transactions: { $each: [transaction], $position: 0 } }
-        }
-      );}
-      else{
+          {
+            $inc: {
+              [`Wallets.${wallet}.amount`]: -change,
+              dailyexpense: change,
+            },
+            $push: { transactions: { $each: [transaction], $position: 0 } },
+          }
+        );
+      } else {
         resp = await UserModel.findOneAndUpdate(
           { email: decode.email },
           {
             $inc: {
               [`Wallets.${wallet}.amount`]: change,
             },
-            $push: { transactions: { $each: [transaction], $position: 0 } }
+            $push: { transactions: { $each: [transaction], $position: 0 } },
           }
         );
       }
       if (resp !== null) {
         const data = await UserModel.findOne({ email: decode.email });
-        res.send({ stat: true, decode, transactions: data.transactions,dailyexpense:data.dailyexpense});
+        res.send({
+          stat: true,
+          decode,
+          transactions: data.transactions,
+          dailyexpense: data.dailyexpense,
+        });
       } else {
         res.send({
           stat: false,
@@ -197,11 +207,9 @@ module.exports.addTransaction = async (req, res) => {
         });
       }
     } else {
-      
       res.send({ stat: false, message: "something went wrong" });
     }
   } catch (err) {
-   
     res.send({ stat: false, message: err.message });
   }
 };

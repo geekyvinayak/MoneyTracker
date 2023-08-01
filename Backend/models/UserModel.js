@@ -22,17 +22,14 @@ const userSchema = new mongoose.Schema({
   },
   budgetOfTheDay: {
     type: Number,
-    default: 0
+    default: 0,
   },
   dailyexpense: {
     type: Number,
-    default: 0
+    default: 0,
   },
   transactions: {
     type: Array,
-  },
-  monthlyBudget: {
-    type: Number,
   },
   Wallets: {
     type: Array,

@@ -18,26 +18,39 @@ function AddWallet() {
 
   const saved = async (e) => {
     const token = localStorage.getItem("token");
-
-    let { data } = await axios.get(
-      process.env.REACT_APP_Backend + "addwallet",
-      { headers: { token: token, walletname: name, amount: amount } }
-    );
-
-    if (data.stat) {
-      setwallets(data.wallets);
-      toast.success("Wallet added!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+    if (name != "" && name != null && amount >= 1) {
+      let { data } = await axios.get(
+        process.env.REACT_APP_Backend + "addwallet",
+        { headers: { token: token, walletname: name, amount: amount } }
+      );
+      setactive(false);
+      if (data.stat) {
+        setwallets(data.wallets);
+        toast.success("Wallet added!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        toast.error("Something Went wrong!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        verify(token, "/usersettings");
+      }
     } else {
-      toast.error("Something Went wrong!", {
+      toast.error("Invalid Values!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -47,34 +60,32 @@ function AddWallet() {
         progress: undefined,
         theme: "light",
       });
-      verify(token, "/usersettings");
+      setactive(true);
     }
   };
   return (
     <>
       {Active ? (
         <div className="textfieldcontainer">
-          
           <div className="walletbox">
-              <input
-                type="text"
-                onChange={handlename}
-                placeholder="enter wallet name"
-              />
-            
-            
-              <input
-                type="text"
-                onChange={handleamount}
-                placeholder="enter initial amount"
-              />
-            </div>
+            <input
+              type="text"
+              onChange={handlename}
+              placeholder="enter wallet name"
+            />
+
+            <input
+              type="text"
+              inputmode="numeric"
+              onChange={handleamount}
+              placeholder="enter initial amount"
+            />
+          </div>
           <div className="buttoncontainer">
             <button
               className="addWalletButton"
               onClick={() => {
                 saved();
-                setactive(false);
               }}
             >
               Save
@@ -87,7 +98,6 @@ function AddWallet() {
             </button>
           </div>
         </div>
-        
       ) : (
         <button onClick={() => setactive(true)} className="addWalletButton">
           Add wallets
