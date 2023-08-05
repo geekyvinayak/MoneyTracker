@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  otp: {
+    type: Number,
+    default: 0,
+  },
   transactions: {
     type: Array,
   },

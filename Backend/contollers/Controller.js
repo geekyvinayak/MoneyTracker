@@ -1,6 +1,9 @@
 const UserModel = require("../models/UserModel.js");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 module.exports.welcome = async (req, res) => {
   res.send("Welcome to Money tracker");
@@ -26,12 +29,71 @@ module.exports.login = async (req, res) => {
           email: email,
         },
         "MoneyTrackerjwtencryption@1200",
-        { expiresIn: "12h" }
+        { expiresIn: "12h" },
       );
       res.send({ stat: "sucess", token: token, userdata: userdata });
     } else {
       res.send({ stat: "fail" });
     }
+  }
+};
+
+module.exports.sendotp = async (req, res) => {
+  const { email } = req.body;
+  const otp = Math.floor(Math.random() * 9000) + 1000;
+  const user = await UserModel.findOne({ email: email });
+  if (user === null) {
+    res.send({ stat: false });
+  } else {
+    var nodemailer = require("nodemailer");
+    const from = process.env.Emailid;
+    const password = process.env.EmailPassword;
+    const to = "geekyvinayak@gmail.com";
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: from,
+        pass: password,
+      },
+    });
+
+    var mailOptions = {
+      from: from,
+      to: to,
+      subject: "Password Reser Requested",
+      html: `<p>Your otp to reset your password is: <strong>${otp}</strong></p>`,
+    };
+
+    transporter.sendMail(mailOptions, function async(error, info) {
+      if (error) {
+        res.send({ stat: false });
+      }
+    });
+    await UserModel.findOneAndUpdate(
+      { email: email },
+      { $set: { otp: otp } },
+      { upsert: true },
+    );
+    res.send({ stat: true });
+  }
+};
+
+module.exports.resetpassword = async (req, res) => {
+  const { email, password, otp } = req.body;
+  const user = await UserModel.findOne({ email: email });
+  if (user.otp > 0 && user.otp == otp) {
+    const saltRounds = 10;
+    const myPlaintextPassword = password;
+    const hashedPassword = await bcrypt.hash(myPlaintextPassword, saltRounds);
+    const newpassword = hashedPassword;
+    await UserModel.findOneAndUpdate(
+      { email: email },
+      { $set: { password: newpassword, otp: 0 } },
+      { upsert: true },
+    );
+    res.send({ stat: true });
+  } else {
+    res.send({ stat: false });
   }
 };
 
@@ -122,7 +184,7 @@ module.exports.update = async (req, res) => {
     if (decode) {
       await UserModel.findOneAndUpdate(
         { email: decode.email },
-        { $set: { [field]: updates } }
+        { $set: { [field]: updates } },
       );
       res.send({ stat: true, decode });
     } else {
@@ -145,7 +207,7 @@ module.exports.addwallet = async (req, res) => {
       const data = await UserModel.findOneAndUpdate(
         { email: decode.email },
         { $push: { Wallets: { name: walletname, amount: parseInt(amount) } } },
-        { new: true }
+        { new: true },
       );
       res.send({ stat: true, decode, wallets: data.Wallets });
     } else {
@@ -178,7 +240,7 @@ module.exports.addTransaction = async (req, res) => {
               dailyexpense: change,
             },
             $push: { transactions: { $each: [transaction], $position: 0 } },
-          }
+          },
         );
       } else {
         resp = await UserModel.findOneAndUpdate(
@@ -188,7 +250,7 @@ module.exports.addTransaction = async (req, res) => {
               [`Wallets.${wallet}.amount`]: change,
             },
             $push: { transactions: { $each: [transaction], $position: 0 } },
-          }
+          },
         );
       }
       if (resp !== null) {

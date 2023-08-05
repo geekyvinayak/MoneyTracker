@@ -2,12 +2,12 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
-import { MyContext } from "../context/Context";
-import "../../assets/usersetting.css";
+import { MyContext } from "../../context/Context";
+import "../../../assets/usersetting.css";
 function Editableinputs({ text, field }) {
   const [type, settype] = useState("label");
   const [changes, setchanges] = useState("");
-  const { verify } = useContext(MyContext);
+  const { verify, setloading } = useContext(MyContext);
 
   function handleChange(event) {
     setchanges(event.target.value);
@@ -20,11 +20,11 @@ function Editableinputs({ text, field }) {
   const saved = async (e) => {
     const token = localStorage.getItem("token");
     e.preventDefault();
-
+    setloading(true);
     let { data } = await axios.get(process.env.REACT_APP_Backend + "update", {
       headers: { token: token, field: field, updates: changes },
     });
-
+    setloading(false);
     if (data.stat) {
       localStorage.removeItem(field);
 

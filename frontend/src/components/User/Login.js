@@ -1,16 +1,22 @@
 import axios, { Axios } from "axios";
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import "../assets/login.css";
-import { MyContext } from "./context/Context";
+import "../../assets/login.css";
+import { MyContext } from "../context/Context";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 function Login() {
-  const { setlogedin, signup, setsignup, verify, getCurrentDateTime } =
-    useContext(MyContext);
+  const {
+    setlogedin,
+    signup,
+    setsignup,
+    verify,
+    getCurrentDateTime,
+    setloading,
+  } = useContext(MyContext);
   //   const [signup,setsignup] = useState(false);
 
   const nav = useNavigate();
@@ -48,7 +54,7 @@ function Login() {
     const lastName = data.lastname;
     const datelatest = getCurrentDateTime();
     const nextmonth = getNextMonthDate(
-      datelatest.date + "/" + datelatest.month + "/" + datelatest.year
+      datelatest.date + "/" + datelatest.month + "/" + datelatest.year,
     );
     const bag = {
       email: email,
@@ -60,10 +66,12 @@ function Login() {
     };
 
     if (signup) {
+      setloading(true);
       let { data } = await axios.post(
         process.env.REACT_APP_Backend + "signup",
-        bag
+        bag,
       );
+      setloading(false);
       if (data == "already exist") {
         toast.error("User already Exists!", {
           position: "top-right",
@@ -90,10 +98,12 @@ function Login() {
         setsignup(false);
       }
     } else {
+      setloading(true);
       let { data } = await axios.post(
         process.env.REACT_APP_Backend + "login",
-        bag
+        bag,
       );
+      setloading(false);
       if (data === "notfound") {
         toast.error("User not Exists! Please signupp", {
           position: "top-right",
@@ -120,10 +130,6 @@ function Login() {
       }
       if (data.stat === "sucess") {
         localStorage.setItem("token", data.token);
-        // localStorage.setItem("firstName",data.userdata.firstName)
-        // localStorage.setItem("lastName",data.userdata.lastName)
-        // localStorage.setItem("monthCycle",data.userdata.monthCycle)
-        // localStorage.setItem("monthlyBudget",data.userdata.monthlyBudget)
         verify(data.token, "/");
       }
     }
@@ -191,6 +197,14 @@ function Login() {
               placeholder="Enter Password"
               {...register("password", { required: true })}
             />
+            {signup ? null : (
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={() => nav("/forgot-password")}
+              >
+                Forgot Password?
+              </div>
+            )}
           </div>
           <div className="form-btn">
             <button>Submit</button>

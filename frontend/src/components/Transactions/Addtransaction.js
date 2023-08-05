@@ -13,6 +13,7 @@ function Addtransaction() {
     getCurrentDateTime,
     datetime,
     setdailyexpense,
+    setloading,
   } = useContext(MyContext);
   const [Active, setactive] = useState(false);
   const [usedwallet, setusedwallet] = useState(0);
@@ -47,12 +48,13 @@ function Addtransaction() {
         description: description,
         date: datetime,
       };
+      setloading(true);
       let { data } = await axios.post(
         process.env.REACT_APP_Backend + "addtransaction",
         bag,
-        { headers: { token: token } }
+        { headers: { token: token } },
       );
-
+      setloading(false);
       if (data.stat) {
         settransactions(data.transactions);
         setdailyexpense(data.dailyexpense);

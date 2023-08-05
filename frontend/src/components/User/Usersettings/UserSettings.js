@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react";
-import { MyContext } from "../context/Context";
+import { MyContext } from "../../context/Context";
 import { useNavigate } from "react-router-dom";
 import Editableinputs from "./Editableinputs";
-import "../../assets/usersetting.css";
+import "../../../assets/usersetting.css";
 import AddWallet from "./AddWallet";
 
 function UserSettings() {

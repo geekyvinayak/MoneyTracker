@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, Routes } from "react-router-dom";
 import { useNavigate } from "react-router-dom/dist";
-import "../assets/navbar.css";
-import { MyContext } from "./context/Context";
+import "../../assets/navbar.css";
+import { MyContext } from "../context/Context";
 
 const Navbar = () => {
   const { logedin, signup, setsignup, setlogedin, verify } =
@@ -42,17 +42,7 @@ const Navbar = () => {
                     Logout
                   </button>
                 </div>
-              ) : (
-                <div className="navbaractions">
-                  <button
-                    onClick={() => {
-                      setsignup(!signup);
-                    }}
-                  >
-                    {signup ? "Login" : "Sign Up"}
-                  </button>
-                </div>
-              )}
+              ) : null}
             </li>
             {logedin ? (
               <li className="responsive-menu">
@@ -69,7 +59,7 @@ const Navbar = () => {
                           className="menu__item"
                           onClick={() => {
                             document.getElementById(
-                              "menu__toggle"
+                              "menu__toggle",
                             ).checked = false;
                           }}
                         >
@@ -83,7 +73,7 @@ const Navbar = () => {
                           className="menu__item"
                           onClick={() => {
                             document.getElementById(
-                              "menu__toggle"
+                              "menu__toggle",
                             ).checked = false;
                           }}
                         >

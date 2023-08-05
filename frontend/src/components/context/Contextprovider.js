@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function Contextprovider(props) {
   const [logedin, setlogedin] = useState(false);
   const [getemail, setemail] = useState("");
-
+  const [loading, setloading] = useState(false);
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
   const [monthCycle, setmonthCycle] = useState("");
@@ -88,6 +88,8 @@ function Contextprovider(props) {
   return (
     <MyContext.Provider
       value={{
+        loading,
+        setloading,
         logedin,
         setlogedin,
         getemail,

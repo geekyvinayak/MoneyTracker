@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { MyContext } from "../context/Context";
+import { MyContext } from "../../context/Context";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -7,7 +7,7 @@ function AddWallet() {
   const [Active, setactive] = useState(false);
   const [name, setname] = useState("");
   const [amount, setamount] = useState(0);
-  const { setwallets, verify } = useContext(MyContext);
+  const { setwallets, verify, setloading } = useContext(MyContext);
   function handlename(event) {
     setname(event.target.value);
   }
@@ -19,10 +19,12 @@ function AddWallet() {
   const saved = async (e) => {
     const token = localStorage.getItem("token");
     if (name != "" && name != null && amount >= 1) {
+      setloading(true);
       let { data } = await axios.get(
         process.env.REACT_APP_Backend + "addwallet",
-        { headers: { token: token, walletname: name, amount: amount } }
+        { headers: { token: token, walletname: name, amount: amount } },
       );
+      setloading(false);
       setactive(false);
       if (data.stat) {
         setwallets(data.wallets);
