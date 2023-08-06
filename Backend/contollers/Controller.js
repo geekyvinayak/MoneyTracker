@@ -48,8 +48,10 @@ module.exports.sendotp = async (req, res) => {
     var nodemailer = require("nodemailer");
     const from = process.env.Emailid;
     const password = process.env.EmailPassword;
-    const to = "geekyvinayak@gmail.com";
-    var transporter = nodemailer.createTransport({
+    const to = email;
+
+    const sendmail = async()=>{
+    var transporter =  nodemailer.createTransport({
       service: "gmail",
       auth: {
         user: from,
@@ -64,15 +66,19 @@ module.exports.sendotp = async (req, res) => {
       html: `<p>Your otp to reset your password is: <strong>${otp}</strong></p>`,
     };
 
-    const sendmail = async()=>{
-    await transporter.sendMail(mailOptions, function async(error, info) {
+    transporter.sendMail(mailOptions, function(error, info) {
       if (error) {
+        console.log("error",error)
         res.send({ stat: false });
       }
-    });}
+      else{
+        console.log("info",info)
+      }
+    });
+  }
 
-    await sendmail();
-    
+  await sendmail();
+
     await UserModel.findOneAndUpdate(
       { email: email },
       { $set: { otp: otp } },
