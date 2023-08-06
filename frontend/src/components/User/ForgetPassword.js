@@ -19,7 +19,7 @@ function ForgetPassword() {
       email: email,
     });
     setTimeout(()=>{},1000)
-    let { data } = await axios.post(process.env.REACT_APP_Backend + "sendotp", {
+    let { data } = await axios.post(process.env.REACT_APP_Backend + "refreshsendotp", {
       email: email,
     });
     setloading(false);
