@@ -19,7 +19,6 @@ router.get("/", welcome);
 
 router.post("/login", login);
 router.post("/sendotp", sendotp);
-router.post("/refreshsendotp", sendotp);
 router.post("/reset-password", resetpassword);
 router.post("/addtransaction", addTransaction);
 router.post("/signup", signup);

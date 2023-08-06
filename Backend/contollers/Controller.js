@@ -42,35 +42,21 @@ module.exports.sendotp = async (req, res) => {
   const { email } = req.body;
   const otp = Math.floor(Math.random() * 9000) + 1000;
   const user = await UserModel.findOne({ email: email });
+  const from = process.env.Emailid;
+  const password = process.env.EmailPassword;
+  const html = `<p>Your otp to reset your password is: <strong>${otp}</strong></p>`
+ const subject = "Password Reset Request on Money-Tracker"
   if (user === null) {
     res.send({ stat: false });
   } else {
-
-    const from = process.env.Emailid;
-    const password = process.env.EmailPassword;
-    const to = email;
-
-    var transporter =  nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: from,
-        pass: password,
-      },
-    });
-
-    var mailOptions = {
-      from: from,
-      to: to,
-      subject: "Password Reser Requested",
-      html: `<p>Your otp to reset your password is: <strong>${otp}</strong></p>`,
-    };
-
-    transporter.sendMail(mailOptions, function(error, info) {
-      if (error) {
-        res.send({ stat: false });
-      }
-    });
-
+    let {data} = await axios.post("https://emailer-66pb.onrender.com/send",{    
+    "password" : password,
+    "from" : from,
+    "to" : email,
+    "html" : html,
+    "subject" : subject
+  })
+  if(data.stat){
     await UserModel.findOneAndUpdate(
       { email: email },
       { $set: { otp: otp } },
@@ -78,7 +64,14 @@ module.exports.sendotp = async (req, res) => {
     );
     res.send({ stat: true });
   }
-};
+  else{
+    res.send({stat: false})
+  }
+  };
+
+    
+  };
+
 
 module.exports.resetpassword = async (req, res) => {
   const { email, password, otp } = req.body;
