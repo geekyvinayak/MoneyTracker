@@ -64,11 +64,15 @@ module.exports.sendotp = async (req, res) => {
       html: `<p>Your otp to reset your password is: <strong>${otp}</strong></p>`,
     };
 
-    transporter.sendMail(mailOptions, function async(error, info) {
+    const sendmail = async()=>{
+    await transporter.sendMail(mailOptions, function async(error, info) {
       if (error) {
         res.send({ stat: false });
       }
-    });
+    });}
+
+    await sendmail();
+    
     await UserModel.findOneAndUpdate(
       { email: email },
       { $set: { otp: otp } },
