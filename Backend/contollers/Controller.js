@@ -48,7 +48,7 @@ module.exports.sendotp = async (req, res) => {
   const subject = "Password Reset Request on Money-Tracker";
   if (user === null) {
     res.send({ stat: false });
-  } else {
+  } 
     const transporter = nodemailer.createTransport({
       port: 465,
       host: "smtp.gmail.com",
@@ -96,7 +96,7 @@ module.exports.sendotp = async (req, res) => {
 
     res.send({ stst: true });
   }
-};
+;
 
 module.exports.resetpassword = async (req, res) => {
   const { email, password, otp } = req.body;
