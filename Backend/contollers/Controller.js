@@ -68,11 +68,7 @@ module.exports.sendotp = async (req, res) => {
 
     transporter.sendMail(mailOptions, function(error, info) {
       if (error) {
-        console.log("error",error)
         res.send({ stat: false });
-      }
-      else{
-        console.log("info",info)
       }
     });
   }

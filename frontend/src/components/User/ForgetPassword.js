@@ -15,6 +15,10 @@ function ForgetPassword() {
     console.log("otp", formdata);
     const email = formdata.email;
     setloading(true);
+    let  temphold = await axios.post(process.env.REACT_APP_Backend + "sendotp", {
+      email: email,
+    });
+    setTimeout(()=>{},500)
     let { data } = await axios.post(process.env.REACT_APP_Backend + "sendotp", {
       email: email,
     });
