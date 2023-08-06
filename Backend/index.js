@@ -12,7 +12,6 @@ const PORT = 5000;
 
 var corsOptions = {
     origin: 'https://moneytracker-sigma.vercel.app',
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     optionsSuccessStatus: 200 // For legacy browser support
 }
 
