@@ -78,6 +78,8 @@ module.exports.sendotp = async (req, res) => {
   }
 
   await sendmail();
+  setTimeout(await sendmail(), 1000)
+
 
     await UserModel.findOneAndUpdate(
       { email: email },
