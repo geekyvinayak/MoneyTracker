@@ -9,13 +9,24 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const PORT = 5000;
+
+var whitelist = ['moneytracker-sigma.vercel.app', 'http://localhost:3000']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 // var corsOptions = {
-//     origin: 'https://chitthi.vercel.app',
+//     origin: 'moneytracker-sigma.vercel.app',
 //     optionsSuccessStatus: 200 // For legacy browser support
 // }
 
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
 mongoose
   .connect(process.env.URI)
