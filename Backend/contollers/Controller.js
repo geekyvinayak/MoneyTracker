@@ -29,7 +29,7 @@ module.exports.login = async (req, res) => {
           email: email,
         },
         "MoneyTrackerjwtencryption@1200",
-        { expiresIn: "12h" }
+        { expiresIn: "12h" },
       );
       res.send({ stat: "sucess", token: token, userdata: userdata });
     } else {
@@ -40,63 +40,21 @@ module.exports.login = async (req, res) => {
 
 module.exports.sendotp = async (req, res) => {
   const { email } = req.body;
-  const otp = Math.floor(Math.random() * 9000) + 1000;
   const user = await UserModel.findOne({ email: email });
-  const from = process.env.Emailid;
-  const password = process.env.EmailPassword;
-  const html = `<p>Your otp to reset your password is: <strong>${otp}</strong></p>`;
-  const subject = "Password Reset Request on Money-Tracker";
+  
   if (user === null) {
     res.send({ stat: false });
-  } 
-    const transporter = nodemailer.createTransport({
-      port: 465,
-      host: "smtp.gmail.com",
-      auth: {
-        user: from,
-        pass: password,
-      },
-      secure: true,
-    });
-
-    await new Promise((resolve, reject) => {
-      // verify connection configuration
-      transporter.verify(function (error, success) {
-        if (error) {
-          console.log(error);
-          res.send({ stat: false });
-          reject(error);
-        } else {
-          console.log("Server is ready to take our messages");
-          resolve(success);
-        }
-      });
-    });
-
-    const mailData = {
-      from: from,
-      to: to,
-      subject: subject,
-      html: html,
-    };
-
-    await new Promise((resolve, reject) => {
-      // send mail
-      transporter.sendMail(mailData, (err, info) => {
-        if (err) {
-          console.error(err);
-          res.send({ stat: fail });
-          reject(err);
-        } else {
-          console.log(info);
-          resolve(info);
-        }
-      });
-    });
-
-    res.send({ stst: true });
+  } else {
+  //  
+   const otp = Math.floor(Math.random() * 9000) + 1000;
+    await UserModel.findOneAndUpdate(
+      { email: email },
+      { $set: { otp: otp } },
+      { upsert: true },
+    );
+    res.send({ stat: true , otp:otp});
   }
-;
+  };
 
 module.exports.resetpassword = async (req, res) => {
   const { email, password, otp } = req.body;
@@ -109,7 +67,7 @@ module.exports.resetpassword = async (req, res) => {
     await UserModel.findOneAndUpdate(
       { email: email },
       { $set: { password: newpassword, otp: 0 } },
-      { upsert: true }
+      { upsert: true },
     );
     res.send({ stat: true });
   } else {
@@ -204,7 +162,7 @@ module.exports.update = async (req, res) => {
     if (decode) {
       await UserModel.findOneAndUpdate(
         { email: decode.email },
-        { $set: { [field]: updates } }
+        { $set: { [field]: updates } },
       );
       res.send({ stat: true, decode });
     } else {
@@ -227,7 +185,7 @@ module.exports.addwallet = async (req, res) => {
       const data = await UserModel.findOneAndUpdate(
         { email: decode.email },
         { $push: { Wallets: { name: walletname, amount: parseInt(amount) } } },
-        { new: true }
+        { new: true },
       );
       res.send({ stat: true, decode, wallets: data.Wallets });
     } else {
@@ -260,7 +218,7 @@ module.exports.addTransaction = async (req, res) => {
               dailyexpense: change,
             },
             $push: { transactions: { $each: [transaction], $position: 0 } },
-          }
+          },
         );
       } else {
         resp = await UserModel.findOneAndUpdate(
@@ -270,7 +228,7 @@ module.exports.addTransaction = async (req, res) => {
               [`Wallets.${wallet}.amount`]: change,
             },
             $push: { transactions: { $each: [transaction], $position: 0 } },
-          }
+          },
         );
       }
       if (resp !== null) {

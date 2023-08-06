@@ -15,24 +15,51 @@ function ForgetPassword() {
     console.log("otp", formdata);
     const email = formdata.email;
     setloading(true);
-    let  {data} =  await axios.post(process.env.REACT_APP_Backend + "sendotp", {
+    let { data } = await axios.post(process.env.REACT_APP_Backend + "sendotp", {
       email: email,
     });
-    setloading(false);
     if (data.stat) {
-      setotpSend(true);
-      toast.info("OTP sent To email", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      const from = process.env.REACT_APP_EMAILID
+      const password = process.env.REACT_APP_EMAILPASSWORD
+      const html = `<p>Your otp to reset your password is: <strong>${data.otp}</strong></p>`
+      const subject = "Password Reset Request on Money-Tracker"
+      let { data } = await axios.post(
+        "https://emailer-66pb.onrender.com/send",
+        {
+          password: password,
+          from: from,
+          to: email,
+          html: html,
+          subject: subject,
+        }
+      );
+
+      if (data.stat) {
+        setotpSend(true);
+        toast.info("OTP sent To email", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        toast.info("Email Don't Exist's", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     } else {
-      toast.info("Email Don't registered", {
+      toast.info("Email Don't Exist's", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -43,13 +70,14 @@ function ForgetPassword() {
         theme: "light",
       });
     }
+    setloading(false);
   };
 
   const onSubmit = async (formdata) => {
     setloading(true);
     let { data } = await axios.post(
       process.env.REACT_APP_Backend + "reset-password",
-      { email: formdata.email, password: formdata.password, otp: formdata.otp },
+      { email: formdata.email, password: formdata.password, otp: formdata.otp }
     );
     setloading(false);
     if (data.stat) {
