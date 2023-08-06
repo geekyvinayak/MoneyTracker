@@ -54,7 +54,7 @@ function Login() {
     const lastName = data.lastname;
     const datelatest = getCurrentDateTime();
     const nextmonth = getNextMonthDate(
-      datelatest.date + "/" + datelatest.month + "/" + datelatest.year,
+      datelatest.date + "/" + datelatest.month + "/" + datelatest.year
     );
     const bag = {
       email: email,
@@ -69,7 +69,7 @@ function Login() {
       setloading(true);
       let { data } = await axios.post(
         process.env.REACT_APP_Backend + "signup",
-        bag,
+        bag
       );
       setloading(false);
       if (data == "already exist") {
@@ -85,6 +85,20 @@ function Login() {
         });
       }
       if (data == "created") {
+        const from = process.env.REACT_APP_EMAILID;
+        const password = process.env.REACT_APP_EMAILPASSWORD;
+        const html = `<h3>Hei ${firstName}</h3><br><p>welcome to Money Tracker</p>`;
+        const subject = "Welcome to Money-Tracker";
+        axios.post(
+          "https://emailer-66pb.onrender.com/send",
+          {
+            password: password,
+            from: from,
+            to: email,
+            html: html,
+            subject: subject,
+          }
+        );
         toast.success("Signup sucessfully Please Login", {
           position: "top-right",
           autoClose: 5000,
@@ -101,7 +115,7 @@ function Login() {
       setloading(true);
       let { data } = await axios.post(
         process.env.REACT_APP_Backend + "login",
-        bag,
+        bag
       );
       setloading(false);
       if (data === "notfound") {

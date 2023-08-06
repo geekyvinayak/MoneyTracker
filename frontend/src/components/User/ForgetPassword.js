@@ -12,13 +12,11 @@ function ForgetPassword() {
   const Navigate = useNavigate();
 
   const getotp = async (formdata) => {
-    console.log("otp", formdata);
     const email = formdata.email;
     setloading(true);
     let { data } = await axios.post(process.env.REACT_APP_Backend + "sendotp", {
       email: email,
     });
-    console.log("gotdata",data);
     const otp = data?.otp
     if (data.stat) {
       const from = process.env.REACT_APP_EMAILID
