@@ -45,7 +45,6 @@ module.exports.sendotp = async (req, res) => {
   if (user === null) {
     res.send({ stat: false });
   } else {
-  //  
    const otp = Math.floor(Math.random() * 9000) + 1000;
     await UserModel.findOneAndUpdate(
       { email: email },
