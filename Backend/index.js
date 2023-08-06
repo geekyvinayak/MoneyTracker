@@ -10,16 +10,6 @@ dotenv.config();
 
 const PORT = 5000;
 
-// var whitelist = ['https://moneytracker-sigma.vercel.app', 'http://localhost:3000']
-// var corsOptions = {
-//   origin: function (origin, callback) {
-//     if (whitelist.indexOf(origin) !== -1) {
-//       callback(null, true)
-//     } else {
-//       callback(new Error('Not allowed by CORS'))
-//     }
-//   }
-// }
 var corsOptions = {
     origin: 'https://moneytracker-sigma.vercel.app',
     optionsSuccessStatus: 200 // For legacy browser support

@@ -2,7 +2,7 @@ const UserModel = require("../models/UserModel.js");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-
+var nodemailer = require("nodemailer");
 dotenv.config();
 
 module.exports.welcome = async (req, res) => {
@@ -45,12 +45,11 @@ module.exports.sendotp = async (req, res) => {
   if (user === null) {
     res.send({ stat: false });
   } else {
-    var nodemailer = require("nodemailer");
+
     const from = process.env.Emailid;
     const password = process.env.EmailPassword;
     const to = email;
 
-    const sendmail = async()=>{
     var transporter =  nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -71,11 +70,6 @@ module.exports.sendotp = async (req, res) => {
         res.send({ stat: false });
       }
     });
-  }
-
-  await sendmail();
-  await sendmail();
-
 
     await UserModel.findOneAndUpdate(
       { email: email },

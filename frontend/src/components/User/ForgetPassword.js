@@ -18,7 +18,7 @@ function ForgetPassword() {
     let  temphold = await axios.post(process.env.REACT_APP_Backend + "sendotp", {
       email: email,
     });
-    setTimeout(()=>{},500)
+    setTimeout(()=>{},1000)
     let { data } = await axios.post(process.env.REACT_APP_Backend + "sendotp", {
       email: email,
     });
