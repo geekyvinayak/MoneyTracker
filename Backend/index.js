@@ -16,14 +16,6 @@ var corsOptions = {
     optionsSuccessStatus: 200 // For legacy browser support
 }
 
-app.use((req, res, next) => {
-  if (req.method === "OPTIONS") {
-    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-    return res.status(200).json({});
-  }
-  next();
-});
-
 app.use(express.json());
 app.use(cors(corsOptions));
 
