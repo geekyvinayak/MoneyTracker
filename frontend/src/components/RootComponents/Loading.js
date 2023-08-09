@@ -6,7 +6,7 @@ import { MyContext } from "../context/Context";
 function Loading() {
   const { loading } = useContext(MyContext);
   return (
-    <Dimmer active={loading}>
+    <Dimmer active={loading} page={true}>
       <Loader />
     </Dimmer>
   );

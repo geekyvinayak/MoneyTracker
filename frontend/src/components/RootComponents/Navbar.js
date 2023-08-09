@@ -59,7 +59,7 @@ const Navbar = () => {
                           className="menu__item"
                           onClick={() => {
                             document.getElementById(
-                              "menu__toggle",
+                              "menu__toggle"
                             ).checked = false;
                           }}
                         >
@@ -73,7 +73,7 @@ const Navbar = () => {
                           className="menu__item"
                           onClick={() => {
                             document.getElementById(
-                              "menu__toggle",
+                              "menu__toggle"
                             ).checked = false;
                           }}
                         >

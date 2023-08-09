@@ -22,7 +22,7 @@ function AddWallet() {
       setloading(true);
       let { data } = await axios.get(
         process.env.REACT_APP_Backend + "addwallet",
-        { headers: { token: token, walletname: name, amount: amount } },
+        { headers: { token: token, walletname: name, amount: amount } }
       );
       setloading(false);
       setactive(false);

@@ -27,6 +27,4 @@ router.get("/update", update);
 router.get("/verify", verify);
 router.get("/addwallet", addwallet);
 
-
-
 module.exports = router;

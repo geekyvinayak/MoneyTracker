@@ -37,6 +37,7 @@ const userSchema = new mongoose.Schema({
   },
   Wallets: {
     type: Array,
+    default: [{ name: "cash", amount: 0 }],
   },
 });
 

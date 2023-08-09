@@ -71,8 +71,8 @@ function Login() {
         process.env.REACT_APP_Backend + "signup",
         bag
       );
-      setloading(false);
       if (data == "already exist") {
+        setloading(false);
         toast.error("User already Exists!", {
           position: "top-right",
           autoClose: 5000,
@@ -102,6 +102,7 @@ function Login() {
             timeout: 5000,
           }
         );
+
         toast.success("Signup sucessfully Please Login", {
           position: "top-right",
           autoClose: 5000,
@@ -112,6 +113,7 @@ function Login() {
           progress: undefined,
           theme: "light",
         });
+        setloading(false);
         setsignup(false);
       }
     } else {

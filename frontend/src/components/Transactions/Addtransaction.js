@@ -52,7 +52,7 @@ function Addtransaction() {
       let { data } = await axios.post(
         process.env.REACT_APP_Backend + "addtransaction",
         bag,
-        { headers: { token: token } },
+        { headers: { token: token } }
       );
       setloading(false);
       if (data.stat) {

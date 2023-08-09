@@ -17,12 +17,12 @@ function ForgetPassword() {
     let { data } = await axios.post(process.env.REACT_APP_Backend + "sendotp", {
       email: email,
     });
-    const otp = data?.otp
+    const otp = data?.otp;
     if (data.stat) {
-      const from = process.env.REACT_APP_EMAILID
-      const password = process.env.REACT_APP_EMAILPASSWORD
-      const html = `<p>Your otp to reset your password is: <strong>${otp}</strong></p>`
-      const subject = "Password Reset Request on Money-Tracker"
+      const from = process.env.REACT_APP_EMAILID;
+      const password = process.env.REACT_APP_EMAILPASSWORD;
+      const html = `<p>Your otp to reset your password is: <strong>${otp}</strong></p>`;
+      const subject = "Password Reset Request on Money-Tracker";
       let { data } = await axios.post(
         "https://emailer-66pb.onrender.com/send",
         {
