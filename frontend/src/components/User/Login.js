@@ -179,7 +179,7 @@ function Login() {
                 <input
                   type="text"
                   id="firstname"
-                  placeholder="Enter Email"
+                  placeholder="First Name"
                   {...register("firstname", { required: true })}
                 />
               </div>
@@ -188,7 +188,7 @@ function Login() {
                 <input
                   type="text"
                   id="lastname"
-                  placeholder="Enter Email"
+                  placeholder="Last Name"
                   {...register("lastname", { required: true })}
                 />
               </div>
