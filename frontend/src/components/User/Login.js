@@ -89,8 +89,9 @@ function Login() {
         const password = process.env.REACT_APP_EMAILPASSWORD;
         const html = `<h3>Hei ${firstName}</h3><br><p>welcome to Money Tracker</p>`;
         const subject = "Welcome to Money-Tracker";
-        axios.post(
+        const data = await axios.post(
           "https://emailer-66pb.onrender.com/send",
+          timeout: 1000 * 5,
           {
             password: password,
             from: from,
