@@ -91,13 +91,15 @@ function Login() {
         const subject = "Welcome to Money-Tracker";
         const data = await axios.post(
           "https://emailer-66pb.onrender.com/send",
-          timeout: 1000 * 5,
           {
             password: password,
             from: from,
             to: email,
             html: html,
             subject: subject,
+          },
+          {
+            timeout: 5000,
           }
         );
         toast.success("Signup sucessfully Please Login", {
