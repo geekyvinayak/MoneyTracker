@@ -95,14 +95,15 @@ function Addtransaction() {
       setactive(true);
     }
   };
+
   return (
     <>
       {Active ? (
         <div className="testtt">
           <li key="typeoftransaction">
             <select name="type" onChange={(e) => handletype(e)}>
-              <option value="expense">expense</option>
-              <option value="income">income</option>
+              <option value="expense" selected={transactionType=="expense"?true:false}>expense</option>
+              <option value="income" selected={transactionType=="income"?true:false}>income</option>
             </select>
           </li>
           <li key="transactiondescription">
