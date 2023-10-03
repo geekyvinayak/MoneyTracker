@@ -11,7 +11,7 @@ dotenv.config();
 const PORT = 5000;
 
 var corsOptions = {
-  origin: "https://moneytracker-sigma.vercel.app",
+  origin: ["https://moneytracker-sigma.vercel.app","http://localhost:3000"],
   optionsSuccessStatus: 200, // For legacy browser support
 }
 
