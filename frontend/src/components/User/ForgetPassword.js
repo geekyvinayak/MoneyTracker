@@ -4,6 +4,16 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { MyContext } from "../context/Context";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../../shadcn/components/ui/card";
+import { Label } from "../../shadcn/components/ui/label";
+import { Input } from "../../shadcn/components/ui/input";
+import { Button } from "../../shadcn/components/ui/button";
 
 function ForgetPassword() {
   const { setlogedin, verify, setloading } = useContext(MyContext);
@@ -44,7 +54,7 @@ function ForgetPassword() {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "light",
+          theme: "dark",
         });
       } else {
         toast.info("Email Don't Exist's", {
@@ -55,7 +65,7 @@ function ForgetPassword() {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "light",
+          theme: "dark",
         });
       }
     } else {
@@ -67,7 +77,7 @@ function ForgetPassword() {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: "dark",
       });
     }
     setloading(false);
@@ -89,7 +99,7 @@ function ForgetPassword() {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: "dark",
       });
       Navigate("/");
     } else {
@@ -101,7 +111,7 @@ function ForgetPassword() {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: "dark",
       });
     }
   };
@@ -116,63 +126,125 @@ function ForgetPassword() {
   }, []);
 
   return (
-    <div className="login-container">
-      <div className="form-container">
-        <ul>
-          <li key="signup">Forget Password</li>
-        </ul>
-        <form onSubmit={handleSubmit(getotp)}>
-          <div className="form">
-            <label htmlFor="email">Enter Email</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Enter Email"
-              {...register("email", { required: true })}
-            />
-          </div>
-          {!otpSend ? (
-            <div className="form-btn">
-              <button>Get Otp</button>
+    <div className="mt-28 h-screen flex justify-center">
+    <div className="dark max-w-[400px] w-[80%]  ">
+      <Card>
+        <CardHeader>
+          <CardTitle>Forgot Password</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <form onSubmit={handleSubmit(getotp)}>
+            <div className="space-y-1">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                {...register("email", { required: true })}
+                type="email"
+                id="email"
+                placeholder="Enter Email"
+              />
             </div>
-          ) : null}
-        </form>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {otpSend ? (
-            <>
-              <div className="form">
-                <label htmlFor="pin">OTP</label>
-                <input
+            {!otpSend ? (
+              <div className="form-btn">
+                <Button>Get Otp</Button>
+              </div>
+            ) : null}
+          </form>
+
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {otpSend ? (
+              <>
+               <div className="space-y-1">
+                <Label htmlFor="pin">OTP</Label>
+                <Input
                   type="password"
                   id="pin"
                   placeholder="Enter Otp"
                   {...register("otp", { required: true })}
                 />
-              </div>
-              <div className="form">
-                <label htmlFor="password">Password</label>
-                <input
+                </div>
+                <div className="space-y-1">
+                <Label htmlFor="password">Password</Label>
+                <Input
                   type="password"
                   id="password"
                   placeholder="Enter New Password"
                   {...register("password", { required: true })}
                 />
-              </div>
-              <div className="form-btn">
-                <button>Reset Password</button>
-              </div>
-            </>
-          ) : null}
-          <div className="form-btn">
-            <p>
-              <div onClick={() => Navigate("/")}>Login</div>
-            </p>
-          </div>
-        </form>
-      </div>
-      <ToastContainer></ToastContainer>
+                </div>
+                <div className="form-btn">
+                  <Button>Reset Password</Button>
+                </div>
+              </>
+            ) : null}
+            <div className="form-btn">
+              <p>
+                <div onClick={() => Navigate("/")}>Login</div>
+              </p>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+    <ToastContainer theme="dark" />
     </div>
   );
 }
 
 export default ForgetPassword;
+
+// <div className="login-container">
+//       <div className="form-container">
+//         <ul>
+//           <li key="signup">Forget Password</li>
+//         </ul>
+//         <form onSubmit={handleSubmit(getotp)}>
+//           <div className="form">
+//             <label htmlFor="email">Enter Email</label>
+//             <input
+//               type="email"
+//               id="email"
+//               placeholder="Enter Email"
+//               {...register("email", { required: true })}
+//             />
+//           </div>
+//           {!otpSend ? (
+//             <div className="form-btn">
+//               <button>Get Otp</button>
+//             </div>
+//           ) : null}
+//         </form>
+//         <form onSubmit={handleSubmit(onSubmit)}>
+//           {otpSend ? (
+//             <>
+//               <div className="form">
+//                 <label htmlFor="pin">OTP</label>
+//                 <input
+//                   type="password"
+//                   id="pin"
+//                   placeholder="Enter Otp"
+//                   {...register("otp", { required: true })}
+//                 />
+//               </div>
+//               <div className="form">
+//                 <label htmlFor="password">Password</label>
+//                 <input
+//                   type="password"
+//                   id="password"
+//                   placeholder="Enter New Password"
+//                   {...register("password", { required: true })}
+//                 />
+//               </div>
+//               <div className="form-btn">
+//                 <button>Reset Password</button>
+//               </div>
+//             </>
+//           ) : null}
+//           <div className="form-btn">
+//             <p>
+//               <div onClick={() => Navigate("/")}>Login</div>
+//             </p>
+//           </div>
+//         </form>
+//       </div>
+//       <ToastContainer></ToastContainer>
+//     </div>

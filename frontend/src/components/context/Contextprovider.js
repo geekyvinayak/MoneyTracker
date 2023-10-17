@@ -76,7 +76,8 @@ function Contextprovider(props) {
     if (data.stat) {
       setdatas(data.user);
       setlogedin(true);
-      nav(place);
+      return true;
+      // nav(place);
     } else {
       localStorage.removeItem("token");
       setlogedin(false);

@@ -4,6 +4,9 @@ import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import { MyContext } from "../../context/Context";
 import "../../../assets/usersetting.css";
+import { Input } from "../../../shadcn/components/ui/input";
+import { Button } from "../../../shadcn/components/ui/button";
+import { Check } from "lucide-react";
 function Editableinputs({ text, field }) {
   const [type, settype] = useState("label");
   const [changes, setchanges] = useState("");
@@ -15,7 +18,7 @@ function Editableinputs({ text, field }) {
 
   useEffect(() => {
     setchanges(text);
-  }, []);
+  }, [text]);
 
   const saved = async (e) => {
     const token = localStorage.getItem("token");
@@ -39,7 +42,7 @@ function Editableinputs({ text, field }) {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: "dark",
       });
       verify(token, "/usersettings");
     }
@@ -49,19 +52,19 @@ function Editableinputs({ text, field }) {
     <>
       {type === "label" ? (
         <label
-          className="usersettingFields usersettingFieldsPen"
+          className=" "
           onClick={() => settype("f")}
         >
           {text}
         </label>
       ) : (
-        <div className="usersettingFields">
-          <input
+        <div className="flex p-0">
+          <Input
             type="text"
             defaultValue={text}
             onChange={handleChange}
-          ></input>
-          <button onClick={saved}>saved</button>
+           className="w-[70%] h-6 pl-1"></Input>
+          <button onClick={saved} className="w-[30%] bg-dark text-white">&#10003;</button>
         </div>
       )}
     </>

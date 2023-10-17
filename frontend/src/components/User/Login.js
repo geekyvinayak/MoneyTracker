@@ -7,20 +7,38 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { Button } from "../../shadcn/components/ui/button";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../../shadcn/components/ui/card";
+import { Input } from "../../shadcn/components/ui/input";
+import { Label } from "../../shadcn/components/ui/label";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../../shadcn/components/ui/tabs";
+
+import { useToast } from "../../shadcn/components/ui/use-toast"
 
 function Login() {
   const {
     setlogedin,
-    signup,
-    setsignup,
     verify,
     getCurrentDateTime,
     setloading,
   } = useContext(MyContext);
-  //   const [signup,setsignup] = useState(false);
 
   const nav = useNavigate();
-  const { register, handleSubmit } = useForm();
+  const { register: loginRegister, handleSubmit: loginHandleSubmit } = useForm();
+  const { register: signupRegister, handleSubmit: signupHandleSubmit } = useForm();
 
   function getNextMonthDate(dateString) {
     const [day, month, year] = dateString.split("/").map(Number);
@@ -47,11 +65,11 @@ function Login() {
     return formattedDate;
   }
 
-  const onSubmit = async (data) => {
-    const email = data.email;
-    const password = data.password;
-    const firstName = data.firstname;
-    const lastName = data.lastname;
+  const onlogin = async (formdata) => {
+    const email = formdata.email;
+    const password = formdata.password;
+    const firstName = formdata.firstname;
+    const lastName = formdata.lastname;
     const datelatest = getCurrentDateTime();
     const nextmonth = getNextMonthDate(
       datelatest.date + "/" + datelatest.month + "/" + datelatest.year
@@ -65,89 +83,102 @@ function Login() {
       monthlyBudget: "0",
     };
 
-    if (signup) {
-      setloading(true);
-      let { data } = await axios.post(
-        process.env.REACT_APP_Backend + "signup",
-        bag
-      );
-      if (data == "already exist") {
-        setloading(false);
-        toast.error("User already Exists!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
-      if (data == "created") {
-        const from = process.env.REACT_APP_EMAILID;
-        const password = process.env.REACT_APP_EMAILPASSWORD;
-        const html = `<h3>Hei ${firstName}</h3><br><p>welcome to Money Tracker</p>`;
-        const subject = "Welcome to Money-Tracker";
-        axios.post(
-          "https://emailer-66pb.onrender.com/send",
-          {
-            password: password,
-            from: from,
-            to: email,
-            html: html,
-            subject: subject,
-          },
-        );
+    setloading(true);
+    let { data } = await axios.post(
+      process.env.REACT_APP_Backend + "login",
+      bag
+    );
+    setloading(false);
+    if (data === "notfound") {
+      toast.error("User not Exists! Please signupp", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+    if (data.stat === "fail") {
+      toast.warning("Wrong Password", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+    if (data.stat === "sucess") {
+      localStorage.setItem("token", data.token);
+      verify(data.token, "/")?nav('/'):nav('/login');
+    }
+  };
 
-        toast.success("Signup sucessfully Please Login", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        setloading(false);
-        setsignup(false);
-      }
-    } else {
-      setloading(true);
-      let { data } = await axios.post(
-        process.env.REACT_APP_Backend + "login",
-        bag
-      );
+  const onsignup = async (formdata) => {
+    const email = formdata.email;
+    const password = formdata.password;
+    const firstName = formdata.firstname;
+    const lastName = formdata.lastname;
+    const datelatest = getCurrentDateTime();
+    const nextmonth = getNextMonthDate(
+      datelatest.date + "/" + datelatest.month + "/" + datelatest.year
+    );
+    const bag = {
+      email: email,
+      password: password,
+      firstName: firstName,
+      lastName: lastName,
+      monthCycle: nextmonth,
+      monthlyBudget: "0",
+    };
+
+    setloading(true);
+    let { data } = await axios.post(
+      process.env.REACT_APP_Backend + "signup",
+      bag
+    );
+    if (data == "already exist") {
       setloading(false);
-      if (data === "notfound") {
-        toast.error("User not Exists! Please signupp", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
-      if (data.stat === "fail") {
-        toast.warning("Wrong Password", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
-      if (data.stat === "sucess") {
-        localStorage.setItem("token", data.token);
-        verify(data.token, "/");
-      }
+      toast.error("User already Exists!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+    if (data == "created") {
+      const from = process.env.REACT_APP_EMAILID;
+      const password = process.env.REACT_APP_EMAILPASSWORD;
+      const html = `<h3>Hei ${firstName}</h3><br><p>welcome to Money Tracker</p>`;
+      const subject = "Welcome to Money-Tracker";
+      axios.post("https://emailer-66pb.onrender.com/send", {
+        password: password,
+        from: from,
+        to: email,
+        html: html,
+        subject: subject,
+      });
+
+      toast.success("Signup sucessfully Please Login", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      setloading(false);
     }
   };
 
@@ -160,83 +191,103 @@ function Login() {
     }
   }, []);
 
-  const changesignup = () => {
-    setsignup(!signup);
-  };
   return (
-    <div className="login-container">
-      <div className="form-container">
-        <ul>
-          {signup ? <li key="signup">Signup</li> : <li key="login">Login</li>}
-        </ul>
-
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {signup ? (
-            <>
-              {" "}
-              <div className="form">
-                <label htmlFor="firstname">First Name</label>
-                <input
-                  type="text"
-                  id="firstname"
-                  placeholder="First Name"
-                  {...register("firstname", { required: true })}
-                />
-              </div>
-              <div className="form">
-                <label htmlFor="lastname">Last Name</label>
-                <input
-                  type="text"
-                  id="lastname"
-                  placeholder="Last Name"
-                  {...register("lastname", { required: true })}
-                />
-              </div>
-            </>
-          ) : (
-            ""
-          )}
-          <div className="form">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Enter Email"
-              {...register("email", { required: true })}
-            />
-          </div>
-          <div className="form">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Enter Password"
-              {...register("password", { required: true })}
-            />
-            {signup ? null : (
-              <div
-                style={{ cursor: "pointer" }}
-                onClick={() => nav("/forgot-password")}
-              >
-                Forgot Password?
-              </div>
-            )}
-          </div>
-          <div className="form-btn">
-            <button>Submit</button>
-          </div>
-          <div className="form-btn">
-            <p>
-              {signup ? (
-                <div onClick={changesignup}>Login</div>
-              ) : (
-                <div onClick={changesignup}>Sign-up</div>
-              )}
-            </p>
-          </div>
-        </form>
-      </div>
-      <ToastContainer></ToastContainer>
+    <div className="h-screen flex justify-center mt-28">
+      <Tabs defaultValue="Login" className="max-w-[400px] w-[80%] dark">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="Login">Login</TabsTrigger>
+          <TabsTrigger value="signup">Sign Up</TabsTrigger>
+        </TabsList>
+        <TabsContent value="Login">
+          <form onSubmit={loginHandleSubmit(onlogin)}>
+            <Card>
+              <CardHeader>
+                <CardTitle>Login</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="space-y-1">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    {...loginRegister("email", { required: true })}
+                    type="email"
+                    id="email"
+                    placeholder="Enter Email"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    type="password"
+                    id="password"
+                    placeholder="Enter Password"
+                    {...loginRegister("password", { required: true })}
+                  />
+                  <Label
+                    className="mr-1 cursor-pointer"
+                    onClick={() => nav("/forgot-password")}
+                  >
+                    Forgot Password?
+                  </Label>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button>Submit</Button>
+              </CardFooter>
+            </Card>
+          </form>
+        </TabsContent>
+        <TabsContent value="signup">
+          <form onSubmit={signupHandleSubmit(onsignup)}>
+            <Card>
+              <CardHeader>
+                <CardTitle>Sign Up</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="space-y-1">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    {...signupRegister("email", { required: true })}
+                    type="email"
+                    id="email"
+                    placeholder="Enter Email"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    type="password"
+                    id="password"
+                    placeholder="Enter Password"
+                    {...signupRegister("password", { required: true })}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="firstname">First Name</Label>
+                  <Input
+                    type="text"
+                    id="firstname"
+                    placeholder="First Name"
+                    {...signupRegister("firstname", { required: true })}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="lastname">Last Name</Label>
+                  <Input
+                    type="text"
+                    id="lastname"
+                    placeholder="Last Name"
+                    {...signupRegister("lastname", { required: true })}
+                  />
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button>Submit</Button>
+              </CardFooter>
+            </Card>
+          </form>
+        </TabsContent>
+      </Tabs>
+      <ToastContainer theme="dark"/>
     </div>
   );
 }
