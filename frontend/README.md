@@ -1,70 +1,95 @@
-# Getting Started with Create React App
+# 💰 Money Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Money Tracker** is a React-based application that helps users manage their finances efficiently. It allows users to track income and expenses across multiple wallets and provides valuable insights through a dynamic dashboard.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## ✨ Features
 
-### `npm start`
+- **🔐 Login/Signup:** Secure user authentication to manage personal finance data.  
+- **🧾 Multiple Wallets:** Add and manage multiple wallets for better financial tracking.  
+- **📊 Dashboard Insights:**  
+  - Track income and expenses with detailed stats.  
+  - **Today's Expense:** View your daily spending at a glance.  
+  - **Today's Budget:** Automatically calculated based on the total wallet balance, remaining days in the month, and user-defined cycle date.  
+- **⏱️ Daily Updates:** Automatic recalculation of today's budget at midnight.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📖 User Flow  
 
-### `npm test`
+### 1️⃣ **Login/Signup** 
+![Screenshot 2024-11-20 at 11 35 56 AM](https://github.com/user-attachments/assets/d3d63ede-0170-4e82-9de9-9d04f051ceeb)
+![Screenshot 2024-11-20 at 11 36 04 AM](https://github.com/user-attachments/assets/86f3646f-ccb6-4537-8e48-6289df7e9e40)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Login:** Use your email and password to access your account.  
+- **Signup:** Create an account with your email and password.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 2️⃣ **Dashboard**  
+![Screenshot 2024-11-20 at 11 32 30 AM](https://github.com/user-attachments/assets/d724e697-cb4e-49b6-af2c-db519e2773aa)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- View all connected wallets.  
+- Track financial transactions and key metrics like:  
+  - **Today's Expense:** Displays total expenses incurred today.  
+  - **Today's Budget:** Shows the maximum amount you can spend today, recalculated daily at midnight.  
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 3️⃣ **Add Wallets and Transactions** 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **Add Wallets:** Create wallets to categorize and track finances effectively.
+![Screenshot 2024-11-20 at 11 34 16 AM](https://github.com/user-attachments/assets/d2643c22-6345-4fc7-b10c-4fbad4f2d7da)
+![Screenshot 2024-11-20 at 11 34 22 AM](https://github.com/user-attachments/assets/edbe4b6c-d587-48a5-ac95-45b55cf647d0)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **Log Transactions:** Add income or expense records for each wallet.  
+![Screenshot 2024-11-20 at 11 33 50 AM](https://github.com/user-attachments/assets/7d343960-638a-4025-aa67-3f489e0c7003)
+![Screenshot 2024-11-20 at 11 39 23 AM](https://github.com/user-attachments/assets/c53e7e97-2434-4219-82f0-00ab25fc297e)
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🛡️ How Budget Calculation Works  
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The **Today's Budget** is calculated daily at midnight using the formula:  
+`Total Wallet Balance ÷ Days Remaining in the Month`  
 
-### Code Splitting
+- **Cycle Date:** Defined by the user to reset the monthly budget cycle.  
+- Automatically ensures users stay within their financial limits.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 🚀 How to Use  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### 1. Login/Signup  
+- **Existing Users:** Log in with your credentials.  
+- **New Users:** Create an account to start managing your finances.  
 
-### Making a Progressive Web App
+### 2. Add Wallets  
+- Navigate to the wallets section and create one or more wallets.  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 3. Log Transactions  
+- Add income or expense transactions for each wallet.  
 
-### Advanced Configuration
+### 4. Monitor Dashboard Stats  
+- Access the dashboard to track your daily expense, today's budget, and other financial insights.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## 🤝 Contributing  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Want to contribute to Money Tracker? Here's how:  
+1. Fork the repository.  
+2. Submit a pull request.  
+3. Open an issue to propose major changes.
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🖥️ Live Demo  
+[Click here to explore Money Tracker](https://moneytracker-sigma.vercel.app/)
+
+---
+
+### 💡 *Track your money, stay in control!*
